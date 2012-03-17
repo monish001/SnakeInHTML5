@@ -6,8 +6,9 @@ var buffer = null;
 function Game(){
 	this.gameLoop = null;
 	var self = this;
-	
+	var r=0;
 	this.Init = function(){
+	//alert("Init called");
 		_canvas = document.getElementById('canvas');
 		if (_canvas && _canvas.getContext){
 			canvas = _canvas.getContext('2d');
@@ -32,6 +33,7 @@ function Game(){
 	
 	this.Update = function(){
 		// Update Objects
+		r = (r+5);
 	}
 	
 	this.Draw = function(){
@@ -39,12 +41,16 @@ function Game(){
 		canvas.clearRect(0, 0, _canvas.width, _canvas.height);
 		
 		//Draw Code
+		buffer.fillStyle = "rgb("+r+", 0, 0)";
+		debugger;
+		buffer.fillRect(5,5,25,25);
 		
 		canvas.drawImage(_buffer, 0, 0);
 
 	}
 	
 	this.Loop = function(){
+		//alert(r);
 		self.Update();
 		self.Draw();	
 	}
