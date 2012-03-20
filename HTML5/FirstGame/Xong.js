@@ -2,13 +2,29 @@ var _canvas = null;
 var _buffer = null;
 var canvas = null;
 var buffer = null;
-
+function Snake(){
+	//data structure for information of each pixel of snake
+	//init function for snake
+	
+	//function to update move of snake
+}
+function SnakeBoard(){
+	//INFO: board is 800X600 pixels
+	
+	//data structure for maze information
+	//function drawMaze() to generate maze and returns a canvas/image
+	
+	//make a snake object
+	
+	//function to accept input
+		//check if move is possible (that is, not colliding into the maze or out of canvas
+		//and reflect move into snake's datastruture
+}
 function Game(){
 	this.gameLoop = null;
 	var self = this;
-	var r=0;
+	var board = new SnakeBoard();
 	this.Init = function(){
-	//alert("Init called");
 		_canvas = document.getElementById('canvas');
 		if (_canvas && _canvas.getContext){
 			canvas = _canvas.getContext('2d');
@@ -21,6 +37,7 @@ function Game(){
 			buffer.strokeStyle = "rgb(255, 255, 255)";
 			buffer.fillStyle = "rgb(255, 255, 255)";
 			buffer.font = "bold 25px sans-serif";
+			//buffer.drawImage(board.drawMaze());
 		}
 	}
 	
@@ -33,7 +50,6 @@ function Game(){
 	
 	this.Update = function(){
 		// Update Objects
-		r = (r+5);
 	}
 	
 	this.Draw = function(){
@@ -41,9 +57,6 @@ function Game(){
 		canvas.clearRect(0, 0, _canvas.width, _canvas.height);
 		
 		//Draw Code
-		buffer.fillStyle = "rgb("+r+", 0, 0)";
-		debugger;
-		buffer.fillRect(5,5,25,25);
 		
 		canvas.drawImage(_buffer, 0, 0);
 
