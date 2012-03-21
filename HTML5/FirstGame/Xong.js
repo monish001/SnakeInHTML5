@@ -54,7 +54,6 @@ function Snake() {
 	
 	//function to update direction and sprite
 	this.setDirection = function(str) {
-	debugger;
 		switch(str){
 			case "Left":
 				self.direction = "Left";
@@ -85,10 +84,11 @@ function Snake() {
 	
 	//function to handle keyDownEvent
 	this.keyCheck = function(event){
+		//alert("Event triggered");
 		var keyID = event.keyCode;
 		switch(keyID){
 			case Keys.ARROW_LEFT:
-				//alert("arrow left pressed");
+				alert("arrow left pressed");
 				self.xSnakeHeadCanvas -= 25;
 				if(self.xSnakeHeadCanvas < 0)
 					self.xSnakeHeadCanvas += _canvas.width;
@@ -96,7 +96,7 @@ function Snake() {
 					self.setDirection("Left");
 				break;
 			case Keys.ARROW_UP:
-				//alert("arrow up pressed");
+				alert("arrow up pressed");
 				self.ySnakeHeadCanvas -= 25;
 				if(self.ySnakeHeadCanvas < 0)
 					self.ySnakeHeadCanvas += _canvas.height;
@@ -104,7 +104,7 @@ function Snake() {
 					self.setDirection("Up");
 				break;
 			case Keys.ARROW_RIGHT:
-				//alert("arrow right pressed");
+				alert("arrow right pressed");
 				self.xSnakeHeadCanvas += 25;
 				if(self.xSnakeHeadCanvas >= _canvas.width)
 					self.xSnakeHeadCanvas -= _canvas.width;
@@ -112,7 +112,7 @@ function Snake() {
 					self.setDirection("Right");
 				break;
 			case Keys.ARROW_DOWN:
-				//alert("arrow down pressed");
+				alert("arrow down pressed");
 				self.ySnakeHeadCanvas += 25;
 				if(self.ySnakeHeadCanvas > _canvas.height)
 					self.ySnakeHeadCanvas -= _canvas.height;
@@ -127,7 +127,13 @@ function Snake() {
 }
 
 function Game() {
-	this.gameLoop = null;
+	var isPlaying = false;
+	var requestAnimFrame = 	window.requestAnimationFrame ||
+							window.webkitRequestAnimationFrame ||
+							window.mozRequestAnimationFrame ||
+							window.msRequestAnimationFrame ||
+							window.oRequestAnimationFrame;
+	debugger;
 	var self = this;
 	var snake = null;
 	this.Init = function() {
@@ -156,11 +162,13 @@ function Game() {
 		}
 	}
 	
-	this.Run = function() {	
-		if(canvas != null) {
-			self.gameLoop = setInterval(self.Loop, 20);
-		}
+	this.startLoop = function() {	
+		self.isPlaying = true;
+		self.Loop();
 			
+	}
+	this.stopLoop = function() {
+		self.isPlaying = false;
 	}
 	
 	this.Update = function() {
@@ -179,7 +187,10 @@ function Game() {
 	}
 	
 	this.Loop = function() {
-		self.Update();
-		self.Draw();	
+		if(self.isPlaying){
+			self.Update();
+			self.Draw();
+			self.requestAnimFrame(self.Loop);
+		}
 	}
 }
