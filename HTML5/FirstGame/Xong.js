@@ -19,6 +19,9 @@
  * Scope for SNAKE VERSION 1.4 (Snake Tail can now grow on eating food)
  * Scope for SNAKE VERSION 1.5 (mazeBricks dynamic variation feature added)
  * Scope for SNAKE VERSION 1.6 (power food pluggable feature)
+ * Scope for SNAKE VERSION 1.7 (front welcome screen added. Single player game complete i guess)
+ * Scope for SNAKE VERSION 1.8 (now 1 or even 2 players can play from same machine)
+ * Scope for SNAKE VERSION 1.9 (second player can play from remote machine also)
  *  
  */
 
@@ -26,32 +29,54 @@ var _canvas = null;
 var _buffer = null;
 var canvas = null;
 var buffer = null;
-function Snake(){
-	//data structure for information of each pixel of snake
-	//ds for direction of snake
-	//init function for snake
+var Keys = {
+	ARROW_LEFT: 37,
+	ARROW_UP: 38,
+	ARROW_RIGHT: 39,
+	ARROW_DOWN: 40
+};
+
+function Snake() {
+	//Data: snakeHead sprite
+	//Data: snakeHead's position on canvas
+	//Data: snakeHead's Prev position on canvas, used for finding direction of movement.
+	//function init for snake
+	this.Init = function(){
+		
+	}
 	
-	//function to update move of snake
+	//function to handle keyDownEvent
+	this.keyCheck = function(event){
+		debugger;
+		alert("event triggered");
+		var keyID = event.keyCode;
+		switch(keyID){
+			case Keys.ARROW_LEFT:
+				alert("arrow left pressed");
+				break;
+			case Keys.ARROW_UP:
+				alert("arrow up pressed");
+				break;
+			case Keys.ARROW_RIGHT:
+				alert("arrow right pressed");
+				break;
+			case Keys.ARROW_DOWN:
+				alert("arrow down pressed");
+				break;
+		}
+	}
+	//function to update move of snake in data structure
+	this.move = function(){
+	}
 }
-function Maze(){
-	//INFO: board is 800X600 pixels
-	
-	//data structure for maze information
-	//function drawMaze() to generate maze and returns a canvas/image
-	
-	//make a snake object
-	
-	//function to accept input
-		//check if move is possible (that is, not colliding into the maze or out of canvas
-		//and reflect move into snake's datastruture
-}
-function Game(){
+
+function Game() {
 	this.gameLoop = null;
 	var self = this;
-	var maze = new Maze();
-	this.Init = function(){
+	var snake = null;
+	this.Init = function() {
 		_canvas = document.getElementById('canvas');
-		if (_canvas && _canvas.getContext){
+		if (_canvas && _canvas.getContext) {
 			canvas = _canvas.getContext('2d');
 			
 			_buffer = document.createElement('canvas');
@@ -62,22 +87,28 @@ function Game(){
 			buffer.strokeStyle = "rgb(255, 255, 255)";
 			buffer.fillStyle = "rgb(255, 255, 255)";
 			buffer.font = "bold 25px sans-serif";
-			//buffer.drawImage(maze.drawMaze(), 0, 0);
+			
+			self.snake = new Snake();
+			debugger;
+			_canvas.addEventListener('keydown', self.snake.keyCheck, true);
+			_canvas.addEventListener('keypress', self.snake.keyCheck, false);
+			_canvas.addEventListener('mousedown', self.snake.keyCheck, false);
+			_canvas.addEventListener('click', self.snake.keyCheck, false);
 		}
 	}
 	
-	this.Run = function(){		
-		if(canvas != null){
+	this.Run = function() {	
+		if(canvas != null) {
 			self.gameLoop = setInterval(self.Loop, 50);
 		}
 			
 	}
 	
-	this.Update = function(){
+	this.Update = function() {
 		// Update Objects
 	}
 	
-	this.Draw = function(){
+	this.Draw = function() {
 		buffer.clearRect(0, 0, _buffer.width, _buffer.height);
 		canvas.clearRect(0, 0, _canvas.width, _canvas.height);
 		
@@ -87,8 +118,9 @@ function Game(){
 
 	}
 	
-	this.Loop = function(){
+	this.Loop = function() {
 		//alert(r);
+		debugger;
 		self.Update();
 		self.Draw();	
 	}
