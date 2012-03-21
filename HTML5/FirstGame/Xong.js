@@ -4,11 +4,12 @@ var canvas = null;
 var buffer = null;
 function Snake(){
 	//data structure for information of each pixel of snake
+	//ds for direction of snake
 	//init function for snake
 	
 	//function to update move of snake
 }
-function SnakeBoard(){
+function SnakeMaze(){
 	//INFO: board is 800X600 pixels
 	
 	//data structure for maze information
@@ -23,7 +24,7 @@ function SnakeBoard(){
 function Game(){
 	this.gameLoop = null;
 	var self = this;
-	var board = new SnakeBoard();
+	var maze = new SnakeMaze();
 	this.Init = function(){
 		_canvas = document.getElementById('canvas');
 		if (_canvas && _canvas.getContext){
@@ -37,7 +38,7 @@ function Game(){
 			buffer.strokeStyle = "rgb(255, 255, 255)";
 			buffer.fillStyle = "rgb(255, 255, 255)";
 			buffer.font = "bold 25px sans-serif";
-			//buffer.drawImage(board.drawMaze());
+			//buffer.drawImage(maze.drawMaze(), 0, 0);
 		}
 	}
 	
