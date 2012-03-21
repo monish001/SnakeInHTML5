@@ -18,7 +18,10 @@
  * Scope for SNAKE VERSION 1.3 (Snake Tail added)
  * Scope for SNAKE VERSION 1.4 (Snake Tail can now grow on eating food)
  * Scope for SNAKE VERSION 1.5 (mazeBricks dynamic variation feature added)
- * Scope for SNAKE VERSION 1.6 (power food pluggable feature)
+ * Scope for SNAKE VERSION 1.6 (power food pluggable feature.)
+ *  For example, BrickBreaker food can allow snake to destroy and pass through walls for say 10 secs.
+ *  For example, MazeFreezer food freezes the dynamic movement of bricks for say 10 secs.
+ *  For example, SnakeShortener shortens the snake by 2 units if length of snake is sufficient 
  * Scope for SNAKE VERSION 1.7 (front welcome screen added. Single player game complete i guess)
  * Scope for SNAKE VERSION 1.8 (now 1 or even 2 players can play from same machine)
  * Scope for SNAKE VERSION 1.9 (second player can play from remote machine also)
@@ -37,36 +40,89 @@ var Keys = {
 };
 
 function Snake() {
+	var self = this;
 	//Data: snakeHead sprite
+	this.snakeHeadSprite = null;	
 	//Data: snakeHead's position on canvas
+	this.xSnakeHeadCanvas = 0;
+	this.ySnakeHeadCanvas = 0;
+
 	//Data: snakeHead's Prev position on canvas, used for finding direction of movement.
+	this.direction = null;
+	this.xSnakeHeadSprite = null;
+	this.ySnakeHeadSprite = null;
+	
+	//function to update direction and sprite
+	this.setDirection = function(str) {
+	debugger;
+		switch(str){
+			case "Left":
+				self.direction = "Left";
+				self.xSnakeHeadSprite = 75;
+				break;
+			case "Right":
+				self.direction = "Right";
+				self.xSnakeHeadSprite = 25;
+				break;
+			case "Up":
+				self.direction = "Up";
+				self.xSnakeHeadSprite = 0;
+				break;
+			case "Down":
+				self.direction = "Down";
+				self.xSnakeHeadSprite = 50;
+				break;
+		}
+	}
+	
 	//function init for snake
 	this.Init = function(){
-		
+		self.xSnakeHeadCanvas = 50;
+		self.ySnakeHeadCanvas = 50;
+		self.ySnakeHeadSprite = 0;
+		self.setDirection("Right");
 	}
 	
 	//function to handle keyDownEvent
 	this.keyCheck = function(event){
-		debugger;
-		alert("event triggered");
 		var keyID = event.keyCode;
 		switch(keyID){
 			case Keys.ARROW_LEFT:
-				alert("arrow left pressed");
+				//alert("arrow left pressed");
+				self.xSnakeHeadCanvas -= 25;
+				if(self.xSnakeHeadCanvas < 0)
+					self.xSnakeHeadCanvas += _canvas.width;
+				if(self.direction != "Left")
+					self.setDirection("Left");
 				break;
 			case Keys.ARROW_UP:
-				alert("arrow up pressed");
+				//alert("arrow up pressed");
+				self.ySnakeHeadCanvas -= 25;
+				if(self.ySnakeHeadCanvas < 0)
+					self.ySnakeHeadCanvas += _canvas.height;
+				if(self.direction != "Up")
+					self.setDirection("Up");
 				break;
 			case Keys.ARROW_RIGHT:
-				alert("arrow right pressed");
+				//alert("arrow right pressed");
+				self.xSnakeHeadCanvas += 25;
+				if(self.xSnakeHeadCanvas >= _canvas.width)
+					self.xSnakeHeadCanvas -= _canvas.width;
+				if(self.direction != "Right")
+					self.setDirection("Right");
 				break;
 			case Keys.ARROW_DOWN:
-				alert("arrow down pressed");
+				//alert("arrow down pressed");
+				self.ySnakeHeadCanvas += 25;
+				if(self.ySnakeHeadCanvas > _canvas.height)
+					self.ySnakeHeadCanvas -= _canvas.height;
+				if(self.direction != "Down")
+					self.setDirection("Down");
 				break;
 		}
 	}
 	//function to update move of snake in data structure
-	this.move = function(){
+	this.move = function() {
 	}
 }
 
@@ -89,17 +145,20 @@ function Game() {
 			buffer.font = "bold 25px sans-serif";
 			
 			self.snake = new Snake();
-			debugger;
-			_canvas.addEventListener('keydown', self.snake.keyCheck, true);
-			_canvas.addEventListener('keypress', self.snake.keyCheck, false);
-			_canvas.addEventListener('mousedown', self.snake.keyCheck, false);
-			_canvas.addEventListener('click', self.snake.keyCheck, false);
+
+			window.addEventListener('keydown', self.snake.keyCheck, true);
+			//_canvas.addEventListener('click', self.snake.keyCheck, false);
+			
+			self.snake.snakeHeadSprite = new Image();
+			self.snake.snakeHeadSprite.src = 'SnakeHead.png';
+			self.snake.snakeHeadSprite.addEventListener('load', self.snake.Init, false); 
+
 		}
 	}
 	
 	this.Run = function() {	
 		if(canvas != null) {
-			self.gameLoop = setInterval(self.Loop, 50);
+			self.gameLoop = setInterval(self.Loop, 20);
 		}
 			
 	}
@@ -113,14 +172,13 @@ function Game() {
 		canvas.clearRect(0, 0, _canvas.width, _canvas.height);
 		
 		//Draw Code
+		buffer.drawImage(self.snake.snakeHeadSprite, self.snake.xSnakeHeadSprite, self.snake.ySnakeHeadSprite, 25,25, self.snake.xSnakeHeadCanvas, self.snake.ySnakeHeadCanvas, 25,25);
 		
 		canvas.drawImage(_buffer, 0, 0);
 
 	}
 	
 	this.Loop = function() {
-		//alert(r);
-		debugger;
 		self.Update();
 		self.Draw();	
 	}
