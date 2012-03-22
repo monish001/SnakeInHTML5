@@ -54,6 +54,7 @@ window.requestAnimFrame = function(){
         }
     );
 }();
+
 function Snake() {
 	var self = this;
 	//Data: snakeHead sprite
@@ -97,45 +98,6 @@ function Snake() {
 		self.setDirection("Right");
 	}
 	
-	//function to handle keyDownEvent
-	this.keyCheck = function(event){
-		//alert("Event triggered");
-		var keyID = event.keyCode;
-		switch(keyID){
-			case Keys.ARROW_LEFT:
-				//alert("arrow left pressed");
-				self.xSnakeHeadCanvas -= 25;
-				if(self.xSnakeHeadCanvas < 0)
-					self.xSnakeHeadCanvas += _canvas.width;
-				if(self.direction != "Left")
-					self.setDirection("Left");
-				break;
-			case Keys.ARROW_UP:
-				//alert("arrow up pressed");
-				self.ySnakeHeadCanvas -= 25;
-				if(self.ySnakeHeadCanvas < 0)
-					self.ySnakeHeadCanvas += _canvas.height;
-				if(self.direction != "Up")
-					self.setDirection("Up");
-				break;
-			case Keys.ARROW_RIGHT:
-				//alert("arrow right pressed");
-				self.xSnakeHeadCanvas += 25;
-				if(self.xSnakeHeadCanvas >= _canvas.width)
-					self.xSnakeHeadCanvas -= _canvas.width;
-				if(self.direction != "Right")
-					self.setDirection("Right");
-				break;
-			case Keys.ARROW_DOWN:
-				//alert("arrow down pressed");
-				self.ySnakeHeadCanvas += 25;
-				if(self.ySnakeHeadCanvas > _canvas.height)
-					self.ySnakeHeadCanvas -= _canvas.height;
-				if(self.direction != "Down")
-					self.setDirection("Down");
-				break;
-		}
-	}
 	//function to update move of snake in data structure
 	this.move = function() {
 	}
@@ -161,7 +123,7 @@ function Game() {
 			
 			self.snake = new Snake();
 
-			window.addEventListener('keydown', self.snake.keyCheck, true);
+			window.addEventListener('keydown', self.keyCheck, true);
 			//_canvas.addEventListener('click', self.snake.keyCheck, false);
 			
 			self.snake.snakeHeadSprite = new Image();
@@ -203,4 +165,45 @@ function Game() {
 			window.requestAnimFrame(self.Loop);
 		}
 	}
+
+	//function to handle keyDownEvent
+	this.keyCheck = function(event){
+		//alert("Event triggered");
+		var keyID = event.keyCode;
+		switch(keyID){
+			case Keys.ARROW_LEFT:
+				//alert("arrow left pressed");
+				self.snake.xSnakeHeadCanvas -= 25;
+				if(self.snake.xSnakeHeadCanvas < 0)
+					self.snake.xSnakeHeadCanvas += _canvas.width;
+				if(self.snake.direction != "Left")
+					self.snake.setDirection("Left");
+				break;
+			case Keys.ARROW_UP:
+				//alert("arrow up pressed");
+				self.snake.ySnakeHeadCanvas -= 25;
+				if(self.snake.ySnakeHeadCanvas < 0)
+					self.snake.ySnakeHeadCanvas += _canvas.height;
+				if(self.snake.direction != "Up")
+					self.snake.setDirection("Up");
+				break;
+			case Keys.ARROW_RIGHT:
+				//alert("arrow right pressed");
+				self.snake.xSnakeHeadCanvas += 25;
+				if(self.snake.xSnakeHeadCanvas >= _canvas.width)
+					self.snake.xSnakeHeadCanvas -= _canvas.width;
+				if(self.snake.direction != "Right")
+					self.snake.setDirection("Right");
+				break;
+			case Keys.ARROW_DOWN:
+				//alert("arrow down pressed");
+				self.snake.ySnakeHeadCanvas += 25;
+				if(self.snake.ySnakeHeadCanvas > _canvas.height)
+					self.snake.ySnakeHeadCanvas -= _canvas.height;
+				if(self.snake.direction != "Down")
+					self.snake.setDirection("Down");
+				break;
+		}
+	}
+
 }
