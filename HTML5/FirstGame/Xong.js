@@ -1,13 +1,14 @@
 /*
  * Author: monish.gupta1@gmail.com
+ * Current Version: working on version 1.0
  * Scope of SNAKE VERSION 1.0 (pathBricks and SnakeHead added)
- *	1. There is only snakeHead, no snakeTail is present. SnakeHead is extensible to facilitate addition of tail feature of given length in the later versions.
+ *	1. There is only snakeHead, no snakeTail is present.
  *  2. There are only pathBricks present.
  *  3. Depending on the user input which is given via arrowKeys, the snakeHead changes position on the canvas. 
  *     It can go through the walls to comeup from the other side.
  *	4. Depending on the location of the last pathBrick the snakeHead has traversed(NWES), it's head would be shown as directed to the corresponding direction.
  *  
- * Scope of SNAKE VERSION 1.1 (1 Maze added)
+ * Scope of SNAKE VERSION 1.1 (Snake running automatically and 1 Maze added)
  *	1. There will be only one particular maze. 
  *     It must be written in an extensible fashion so that later(in next versions) on upgrading the stages, differenr mazes could be used.
  *	2. There is only snakeHead, no snakeTail is present. SnakeHead is extensible to facilitate addition of tail feature of given length in the later versions.
@@ -122,33 +123,21 @@ function EventHandler() {
 		switch(keyID){
 			case Keys.ARROW_LEFT:
 				//alert("arrow left pressed");
-				global.snake.xSnakeHeadCanvas -= 25;
-				if(global.snake.xSnakeHeadCanvas < 0)
-					global.snake.xSnakeHeadCanvas += _canvas.width;
 				if(global.snake.direction != "Left")
 					global.snake.setDirection("Left");
 				break;
 			case Keys.ARROW_UP:
 				//alert("arrow up pressed");
-				global.snake.ySnakeHeadCanvas -= 25;
-				if(global.snake.ySnakeHeadCanvas < 0)
-					global.snake.ySnakeHeadCanvas += _canvas.height;
 				if(global.snake.direction != "Up")
 					global.snake.setDirection("Up");
 				break;
 			case Keys.ARROW_RIGHT:
 				//alert("arrow right pressed");
-				global.snake.xSnakeHeadCanvas += 25;
-				if(global.snake.xSnakeHeadCanvas >= _canvas.width)
-					global.snake.xSnakeHeadCanvas -= _canvas.width;
 				if(global.snake.direction != "Right")
 					global.snake.setDirection("Right");
 				break;
 			case Keys.ARROW_DOWN:
 				//alert("arrow down pressed");
-				global.snake.ySnakeHeadCanvas += 25;
-				if(global.snake.ySnakeHeadCanvas >= _canvas.height)
-					global.snake.ySnakeHeadCanvas -= _canvas.height;
 				if(global.snake.direction != "Down")
 					global.snake.setDirection("Down");
 				break;
@@ -198,7 +187,29 @@ function Game() {
 	}
 	
 	this.Update = function() {
-		// Update Objects
+		switch(global.snake.direction){
+			case "Left":
+				global.snake.xSnakeHeadCanvas -= 25;
+				if(global.snake.xSnakeHeadCanvas < 0)
+					global.snake.xSnakeHeadCanvas += _canvas.width;
+				break;
+			case "Right":
+				global.snake.xSnakeHeadCanvas += 25;
+				if(global.snake.xSnakeHeadCanvas >= _canvas.width)
+					global.snake.xSnakeHeadCanvas -= _canvas.width;
+				break;
+			case "Up":
+				global.snake.ySnakeHeadCanvas -= 25;
+				if(global.snake.ySnakeHeadCanvas < 0)
+					global.snake.ySnakeHeadCanvas += _canvas.height;
+				break;
+			case "Down":
+				global.snake.ySnakeHeadCanvas += 25;
+				if(global.snake.ySnakeHeadCanvas >= _canvas.height)
+					global.snake.ySnakeHeadCanvas -= _canvas.height;
+				break;
+		}
+
 	}
 	
 	this.Draw = function() {
