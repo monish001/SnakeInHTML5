@@ -129,7 +129,8 @@ function Game() {
 			self.snake.snakeHeadSprite = new Image();
 			self.snake.snakeHeadSprite.src = 'SnakeHead.png';
 			self.snake.snakeHeadSprite.addEventListener('load', self.snake.Init, false); 
-
+			
+			self.startLoop();
 		}
 	}
 	
