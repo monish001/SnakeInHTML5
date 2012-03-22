@@ -27,7 +27,7 @@
  * Scope for SNAKE VERSION 1.9 (second player can play from remote machine also)
  *  
  */
-
+ 
 var _canvas = null;
 var _buffer = null;
 var canvas = null;
