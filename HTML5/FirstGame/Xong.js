@@ -39,6 +39,21 @@ var Keys = {
 	ARROW_DOWN: 40
 };
 
+/*
+ * Thanks to http://stackoverflow.com/questions/5605588/how-to-use-requestanimationframe for this function
+ */
+window.requestAnimFrame = function(){
+    return (
+        window.requestAnimationFrame       || 
+        window.webkitRequestAnimationFrame || 
+        window.mozRequestAnimationFrame    || 
+        window.oRequestAnimationFrame      || 
+        window.msRequestAnimationFrame     || 
+        function(/* function */ callback){
+            window.setTimeout(callback, 1000 / 60);
+        }
+    );
+}();
 function Snake() {
 	var self = this;
 	//Data: snakeHead sprite
@@ -88,7 +103,7 @@ function Snake() {
 		var keyID = event.keyCode;
 		switch(keyID){
 			case Keys.ARROW_LEFT:
-				alert("arrow left pressed");
+				//alert("arrow left pressed");
 				self.xSnakeHeadCanvas -= 25;
 				if(self.xSnakeHeadCanvas < 0)
 					self.xSnakeHeadCanvas += _canvas.width;
@@ -96,7 +111,7 @@ function Snake() {
 					self.setDirection("Left");
 				break;
 			case Keys.ARROW_UP:
-				alert("arrow up pressed");
+				//alert("arrow up pressed");
 				self.ySnakeHeadCanvas -= 25;
 				if(self.ySnakeHeadCanvas < 0)
 					self.ySnakeHeadCanvas += _canvas.height;
@@ -104,7 +119,7 @@ function Snake() {
 					self.setDirection("Up");
 				break;
 			case Keys.ARROW_RIGHT:
-				alert("arrow right pressed");
+				//alert("arrow right pressed");
 				self.xSnakeHeadCanvas += 25;
 				if(self.xSnakeHeadCanvas >= _canvas.width)
 					self.xSnakeHeadCanvas -= _canvas.width;
@@ -112,7 +127,7 @@ function Snake() {
 					self.setDirection("Right");
 				break;
 			case Keys.ARROW_DOWN:
-				alert("arrow down pressed");
+				//alert("arrow down pressed");
 				self.ySnakeHeadCanvas += 25;
 				if(self.ySnakeHeadCanvas > _canvas.height)
 					self.ySnakeHeadCanvas -= _canvas.height;
@@ -128,12 +143,6 @@ function Snake() {
 
 function Game() {
 	var isPlaying = false;
-	var requestAnimFrame = 	window.requestAnimationFrame ||
-							window.webkitRequestAnimationFrame ||
-							window.mozRequestAnimationFrame ||
-							window.msRequestAnimationFrame ||
-							window.oRequestAnimationFrame;
-	debugger;
 	var self = this;
 	var snake = null;
 	this.Init = function() {
@@ -163,9 +172,10 @@ function Game() {
 	}
 	
 	this.startLoop = function() {	
-		self.isPlaying = true;
-		self.Loop();
-			
+		if(!(self.isPlaying)){
+			self.isPlaying = true;
+			self.Loop();
+		}
 	}
 	this.stopLoop = function() {
 		self.isPlaying = false;
@@ -190,7 +200,7 @@ function Game() {
 		if(self.isPlaying){
 			self.Update();
 			self.Draw();
-			self.requestAnimFrame(self.Loop);
+			window.requestAnimFrame(self.Loop);
 		}
 	}
 }
