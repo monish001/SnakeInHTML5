@@ -69,6 +69,10 @@ function Maze() {
  */
 function Snake() {
 	var self = this;
+	
+	this.speed = null;
+	this.speedCounter = null;
+
 	//Data: snakeHead sprite
 	this.snakeHeadSprite = null;	
 	//Data: snakeHead's position on canvas
@@ -148,6 +152,7 @@ function EventHandler() {
 function Game() {
 	var isPlaying = false;
 	var self = this;
+
 	this.Init = function() {
 		_canvas = document.getElementById('canvas');
 		if (_canvas && _canvas.getContext) {
@@ -163,6 +168,8 @@ function Game() {
 			buffer.font = "bold 25px sans-serif";
 			
 			global.snake = new Snake();
+			global.snake.speedCounter = 0;
+			global.snake.speed = 1;//higher the value lesser is the speed
 			global.eventHandler = new EventHandler();
 
 			window.addEventListener('keydown', global.eventHandler.keyCheck, true);
@@ -209,7 +216,6 @@ function Game() {
 					global.snake.ySnakeHeadCanvas -= _canvas.height;
 				break;
 		}
-
 	}
 	
 	this.Draw = function() {
@@ -225,8 +231,13 @@ function Game() {
 	
 	this.Loop = function() {
 		if(self.isPlaying){
-			self.Update();
-			self.Draw();
+			if(global.snake.speedCounter==0) {
+				self.Update();
+				self.Draw();
+			}
+			++(global.snake.speedCounter);
+			if(global.snake.speedCounter >= global.snake.speed)
+				global.snake.speedCounter = 0;
 			window.requestAnimFrame(self.Loop);
 		}
 	}
