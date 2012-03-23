@@ -28,7 +28,10 @@
  * Scope for SNAKE VERSION 1.9 (second player can play from remote machine also)
  *  
  */
- 
+
+/*
+ * Global variables
+ */
 var _canvas = null;
 var _buffer = null;
 var canvas = null;
@@ -60,96 +63,10 @@ window.requestAnimFrame = function(){
     );
 }();
 
-function Maze() {
-	
-}
-
 /*
- * Template for creating objects of Snake
+ * Template for creating objects of GameManager
  */
-function Snake() {
-	var self = this;
-	
-	this.speed = null;
-	this.speedCounter = null;
-
-	//Data: snakeHead sprite
-	this.snakeHeadSprite = null;	
-	//Data: snakeHead's position on canvas
-	this.xSnakeHeadCanvas = 0;
-	this.ySnakeHeadCanvas = 0;
-
-	//Data: snakeHead's Prev position on canvas, used for finding direction of movement.
-	this.direction = null;
-	this.xSnakeHeadSprite = null;
-	this.ySnakeHeadSprite = null;
-	
-	//function to update direction and sprite
-	this.setDirection = function(str) {
-		switch(str){
-			case "Left":
-				self.direction = "Left";
-				self.xSnakeHeadSprite = 75;
-				break;
-			case "Right":
-				self.direction = "Right";
-				self.xSnakeHeadSprite = 25;
-				break;
-			case "Up":
-				self.direction = "Up";
-				self.xSnakeHeadSprite = 0;
-				break;
-			case "Down":
-				self.direction = "Down";
-				self.xSnakeHeadSprite = 50;
-				break;
-		}
-	}
-	
-	//function init for snake
-	this.Init = function(){
-		self.xSnakeHeadCanvas = 50;
-		self.ySnakeHeadCanvas = 50;
-		self.ySnakeHeadSprite = 0;
-		self.setDirection("Right");
-	}
-	
-	//function to update move of snake in data structure
-	this.move = function() {
-	}
-}
-
-function EventHandler() {
-	//function to handle keyDownEvent
-	this.keyCheck = function(event){
-		//alert("Event triggered");
-		var keyID = event.keyCode;
-		switch(keyID){
-			case Keys.ARROW_LEFT:
-				//alert("arrow left pressed");
-				if(global.snake.direction != "Left")
-					global.snake.setDirection("Left");
-				break;
-			case Keys.ARROW_UP:
-				//alert("arrow up pressed");
-				if(global.snake.direction != "Up")
-					global.snake.setDirection("Up");
-				break;
-			case Keys.ARROW_RIGHT:
-				//alert("arrow right pressed");
-				if(global.snake.direction != "Right")
-					global.snake.setDirection("Right");
-				break;
-			case Keys.ARROW_DOWN:
-				//alert("arrow down pressed");
-				if(global.snake.direction != "Down")
-					global.snake.setDirection("Down");
-				break;
-		}
-	}	
-}
-
-function Game() {
+function GameManager() {
 	var isPlaying = false;
 	var self = this;
 
@@ -169,7 +86,7 @@ function Game() {
 			
 			global.snake = new Snake();
 			global.snake.speedCounter = 0;
-			global.snake.speed = 1;//higher the value lesser is the speed
+			global.snake.speed = 4;//higher the value lesser is the speed
 			global.eventHandler = new EventHandler();
 
 			window.addEventListener('keydown', global.eventHandler.keyCheck, true);
