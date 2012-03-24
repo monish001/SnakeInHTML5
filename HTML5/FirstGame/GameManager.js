@@ -1,6 +1,8 @@
 /*
  * Author: monish.gupta1@gmail.com
- * Current Version: working on version 1.0
+ * File: GameManager.js
+ */
+/* Current Version: working on version 1.0
  * Scope of SNAKE VERSION 1.0 (pathBricks and SnakeHead added)
  *	1. There is only snakeHead, no snakeTail is present.
  *  2. There are only pathBricks present.
@@ -40,12 +42,7 @@ var global = this;
 var snake = null;
 var maze = null;
 var eventHandler = null;
-var Keys = {
-	ARROW_LEFT: 37,
-	ARROW_UP: 38,
-	ARROW_RIGHT: 39,
-	ARROW_DOWN: 40
-};
+var gameManager = null;
 
 /*
  * Thanks to http://stackoverflow.com/questions/5605588/how-to-use-requestanimationframe for this function
@@ -67,8 +64,9 @@ window.requestAnimFrame = function(){
  * Template for creating objects of GameManager
  */
 function GameManager() {
-	var isPlaying = false;
+	this.isPlaying = false;
 	var self = this;
+	global.gameManager = self;
 
 	this.Init = function() {
 		_canvas = document.getElementById('canvas');
@@ -139,8 +137,11 @@ function GameManager() {
 		buffer.clearRect(0, 0, _buffer.width, _buffer.height);
 		canvas.clearRect(0, 0, _canvas.width, _canvas.height);
 		
-		//Draw Code
+		//Draw SnakeHead
 		buffer.drawImage(global.snake.snakeHeadSprite, global.snake.xSnakeHeadSprite, global.snake.ySnakeHeadSprite, 25,25, global.snake.xSnakeHeadCanvas, global.snake.ySnakeHeadCanvas, 25,25);
+		
+		//Draw Maze
+		//maze.draw(buffer);
 		
 		canvas.drawImage(_buffer, 0, 0);
 

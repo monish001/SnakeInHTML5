@@ -1,6 +1,9 @@
 /*
- * Template for creating objects of Snake
  * Author: monish.gupta1@gmail.com
+ * File: Snake.js
+ */
+/*
+ * Template for creating objects of Snake
  */
 function Snake() {
 	var self = this;
