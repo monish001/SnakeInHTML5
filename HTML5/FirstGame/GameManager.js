@@ -43,6 +43,7 @@ var snake = null;
 var maze = null;
 var eventHandler = null;
 var gameManager = null;
+var imageSprite = null;
 
 /*
  * Thanks to http://stackoverflow.com/questions/5605588/how-to-use-requestanimationframe for this function
@@ -71,6 +72,9 @@ function GameManager() {
 	this.Init = function() {
 		_canvas = document.getElementById('canvas');
 		if (_canvas && _canvas.getContext) {
+			global.imageSprite = new Image();
+			global.imageSprite.src = 'sprite.png';
+			_canvas.style.backgroundImage=imageSprite;
 			canvas = _canvas.getContext('2d');
 			
 			_buffer = document.createElement('canvas');
@@ -82,19 +86,13 @@ function GameManager() {
 			buffer.fillStyle = "rgb(255, 255, 255)";
 			buffer.font = "bold 25px sans-serif";
 			
-			global.snake = new Snake();
-			global.snake.speedCounter = 0;
-			global.snake.speed = 4;//higher the value lesser is the speed
-			global.eventHandler = new EventHandler();
-
-			window.addEventListener('keydown', global.eventHandler.keyCheck, true);
-			//_canvas.addEventListener('click', global.snake.keyCheck, false);
-			
-			global.snake.snakeHeadSprite = new Image();
-			global.snake.snakeHeadSprite.src = 'SnakeHead.png';
-			global.snake.snakeHeadSprite.addEventListener('load', global.snake.Init, false); 
-
-			self.startLoop();
+			global.imageSprite.addEventListener('load', function () {
+				global.snake = new Snake();
+				global.snake.Init();
+				global.snake.setSpeed(14);//higher the value lesser is the speed
+				global.eventHandler = new EventHandler();
+				global.maze = new Maze();
+			}, false);
 		}
 	}
 	
@@ -109,28 +107,8 @@ function GameManager() {
 	}
 	
 	this.Update = function() {
-		switch(global.snake.direction){
-			case "Left":
-				global.snake.xSnakeHeadCanvas -= 25;
-				if(global.snake.xSnakeHeadCanvas < 0)
-					global.snake.xSnakeHeadCanvas += _canvas.width;
-				break;
-			case "Right":
-				global.snake.xSnakeHeadCanvas += 25;
-				if(global.snake.xSnakeHeadCanvas >= _canvas.width)
-					global.snake.xSnakeHeadCanvas -= _canvas.width;
-				break;
-			case "Up":
-				global.snake.ySnakeHeadCanvas -= 25;
-				if(global.snake.ySnakeHeadCanvas < 0)
-					global.snake.ySnakeHeadCanvas += _canvas.height;
-				break;
-			case "Down":
-				global.snake.ySnakeHeadCanvas += 25;
-				if(global.snake.ySnakeHeadCanvas >= _canvas.height)
-					global.snake.ySnakeHeadCanvas -= _canvas.height;
-				break;
-		}
+		//update snake position
+		global.snake.move();
 	}
 	
 	this.Draw = function() {
@@ -138,10 +116,10 @@ function GameManager() {
 		canvas.clearRect(0, 0, _canvas.width, _canvas.height);
 		
 		//Draw SnakeHead
-		buffer.drawImage(global.snake.snakeHeadSprite, global.snake.xSnakeHeadSprite, global.snake.ySnakeHeadSprite, 25,25, global.snake.xSnakeHeadCanvas, global.snake.ySnakeHeadCanvas, 25,25);
+		buffer.drawImage(global.imageSprite, global.snake.xSnakeHeadSprite, global.snake.ySnakeHeadSprite, 25,25, global.snake.xSnakeHeadCanvas, global.snake.ySnakeHeadCanvas, 25,25);
 		
 		//Draw Maze
-		//maze.draw(buffer);
+		maze.draw(buffer);
 		
 		canvas.drawImage(_buffer, 0, 0);
 

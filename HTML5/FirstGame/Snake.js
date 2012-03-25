@@ -9,10 +9,8 @@ function Snake() {
 	var self = this;
 	
 	this.speed = null;
-	this.speedCounter = null;
+	this.speedCounter = 0;
 
-	//Data: snakeHead sprite
-	this.snakeHeadSprite = null;	
 	//Data: snakeHead's position on canvas
 	this.xSnakeHeadCanvas = 0;
 	this.ySnakeHeadCanvas = 0;
@@ -21,7 +19,7 @@ function Snake() {
 	this.direction = null;
 	this.xSnakeHeadSprite = null;
 	this.ySnakeHeadSprite = null;
-	
+
 	//function to update direction and sprite
 	this.setDirection = function(str) {
 		switch(str){
@@ -44,6 +42,11 @@ function Snake() {
 		}
 	}
 	
+	//function to set speed
+	this.setSpeed = function  (num) {
+		self.speed = num;
+	}
+	
 	//function init for snake
 	this.Init = function(){
 		self.xSnakeHeadCanvas = 50;
@@ -54,5 +57,28 @@ function Snake() {
 	
 	//function to update move of snake in data structure
 	this.move = function() {
+		switch(self.direction){
+			case "Left":
+				self.xSnakeHeadCanvas -= 25;
+				if(self.xSnakeHeadCanvas < 0)
+					self.xSnakeHeadCanvas += _canvas.width;
+				break;
+			case "Right":
+				self.xSnakeHeadCanvas += 25;
+				if(self.xSnakeHeadCanvas >= _canvas.width)
+					self.xSnakeHeadCanvas -= _canvas.width;
+				break;
+			case "Up":
+				self.ySnakeHeadCanvas -= 25;
+				if(self.ySnakeHeadCanvas < 0)
+					self.ySnakeHeadCanvas += _canvas.height;
+				break;
+			case "Down":
+				self.ySnakeHeadCanvas += 25;
+				if(self.ySnakeHeadCanvas >= _canvas.height)
+					self.ySnakeHeadCanvas -= _canvas.height;
+				break;
+		}
 	}
+	
 }

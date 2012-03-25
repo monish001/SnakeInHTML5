@@ -107,6 +107,7 @@ function EventHandler() {
 	this.keyCheck = function(event){
 		//alert("Event triggered");
 		var keyID = event.keyCode;
+		if(global.gameManager.isPlaying)
 		switch(keyID){
 			case Keys.ARROW_LEFT:
 				//alert("arrow left pressed");
@@ -131,7 +132,8 @@ function EventHandler() {
 			case Keys.P:
 				self.pause();
 				break;
-		}
+		} else
+			global.gameManager.startLoop();
 	}
 
 	this.pause = function() {
@@ -140,4 +142,6 @@ function EventHandler() {
 		else
 			global.gameManager.startLoop();
 	}
+	window.addEventListener('keydown', self.keyCheck, true);
+	//_canvas.addEventListener('click', self.keyCheck, false);
 }
