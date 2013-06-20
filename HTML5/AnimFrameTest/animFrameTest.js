@@ -11,6 +11,7 @@ window.requestAnimFrame = function(){
     );
 }();
 var Game = function () {
+	var count = 1;
 	var self = this;
 	var isPlaying = null;
 	this.init = function () {
@@ -21,6 +22,7 @@ var Game = function () {
 		debugger;
 		if(self.isPlaying){
 			//draw and update
+			count++;
 			window.requestAnimFrame(self.loop);
 		}
 	}
