@@ -26,17 +26,17 @@ function Maze() {
 	 */
 	this.draw = function (buffer, gameStage){
 		for(var brick=0; brick<mazes[gameStage].xBricks.length; brick++)
-			buffer.drawImage(global.imageSprite, global.mazes.xBrickSprite, global.mazes.yBrickSprite, 25, 25, mazes[gameStage].xBricks[brick] * 25, mazes[gameStage].yBricks[brick] * 25, 25,25);
+			buffer.drawImage(global.imageSprite, global.gameManager.mazes.xBrickSprite, global.gameManager.mazes.yBrickSprite, 25, 25, mazes[gameStage].xBricks[brick] * 25, mazes[gameStage].yBricks[brick] * 25, 25,25);
 	}
 
 	/*
 	 * function checks whether snake head is overlapping with maze bricks and updates isPlaying flag
 	 */
 	this.checkCollision = function(){
-		var xBricks = mazes[global.gameStage].xBricks;
-		var yBricks = mazes[global.gameStage].yBricks;
-		var xSnakeHead = global.snake.xSnakeHeadCanvas;
-		var ySnakeHead = global.snake.ySnakeHeadCanvas;
+		var xBricks = mazes[global.gameManager.gameStage].xBricks;
+		var yBricks = mazes[global.gameManager.gameStage].yBricks;
+		var xSnakeHead = global.gameManager.snake.xSnakeHeadCanvas;
+		var ySnakeHead = global.gameManager.snake.ySnakeHeadCanvas;
 		
 		for(var index=0; index<xBricks.length; index++){
 			var xBrick = xBricks[index]*25;

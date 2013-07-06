@@ -111,29 +111,29 @@ function EventHandler() {
 		switch(keyID){
 			case Keys.ARROW_LEFT:
 				//alert("arrow left pressed");
-				if(global.snake.direction != "Left" && global.snake.direction != "Right"){
-					global.snake.setDirection("Left");
+				if(global.gameManager.snake.direction != "Left" && global.gameManager.snake.direction != "Right"){
+					global.gameManager.snake.setDirection("Left");
 					global.gameManager.waiting = false;
 				}
 				break;
 			case Keys.ARROW_UP:
 				//alert("arrow up pressed");
-				if(global.snake.direction != "Up" && global.snake.direction != "Down"){
-					global.snake.setDirection("Up");
+				if(global.gameManager.snake.direction != "Up" && global.gameManager.snake.direction != "Down"){
+					global.gameManager.snake.setDirection("Up");
 					global.gameManager.waiting = false;
 				}
 				break;
 			case Keys.ARROW_RIGHT:
 				//alert("arrow right pressed");
-				if(global.snake.direction != "Right" && global.snake.direction != "Left"){
-					global.snake.setDirection("Right");
+				if(global.gameManager.snake.direction != "Right" && global.gameManager.snake.direction != "Left"){
+					global.gameManager.snake.setDirection("Right");
 					global.gameManager.waiting = false;
 				}
 				break;	
 			case Keys.ARROW_DOWN:
 				//alert("arrow down pressed");
-				if(global.snake.direction != "Down" && global.snake.direction != "Up"){
-					global.snake.setDirection("Down");
+				if(global.gameManager.snake.direction != "Down" && global.gameManager.snake.direction != "Up"){
+					global.gameManager.snake.setDirection("Down");
 					global.gameManager.waiting = false;
 				}
 				break;

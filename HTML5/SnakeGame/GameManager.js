@@ -2,7 +2,7 @@
  * Author: monish.gupta1@gmail.com
  * File: GameManager.js
  */
-/* Current Version: working on version 1.0
+/* Current Version: working on version 1.2
  * Scope of SNAKE VERSION 1.0 (pathBricks and SnakeHead added)
  *	1. There is only snakeHead, no snakeTail is present.
  *  2. There are only pathBricks present.
@@ -40,14 +40,9 @@ var _buffer = null;
 var canvas = null;
 var buffer = null;
 
-var global = this;
-var snake = null;
-var mazes = null;
-var eventHandler = null;
 var gameManager = null;
+var global = this;
 var imageSprite = null;
-
-var gameStage = null;
 
 /*
  * Thanks to http://stackoverflow.com/questions/5605588/how-to-use-requestanimationframe for this function
@@ -72,6 +67,10 @@ function GameManager() {
 	this.isPlaying = false;
 	var self = this;
 	global.gameManager = self;
+	var snake = null;
+	var mazes = null;
+	var eventHandler = null;
+	var gameStage = null;	
 
 	//gets reset to true just after drawing of a frame buffer.
 	var waiting = true;
@@ -94,12 +93,12 @@ function GameManager() {
 			buffer.font = "bold 25px sans-serif";
 			
 			global.imageSprite.addEventListener('load', function () {
-				global.gameStage = 0;
-				global.snake = new Snake();
-				global.snake.Init();
-				global.snake.setSpeed(0);//higher the value lesser is the speed >= 0
-				global.eventHandler = new EventHandler();
-				global.mazes = new Maze();
+				global.gameManager.gameStage = 0;
+				global.gameManager.snake = new Snake();
+				global.gameManager.snake.Init();
+				global.gameManager.snake.setSpeed(5);//higher the value lesser is the speed >= 0
+				global.gameManager.eventHandler = new EventHandler();
+				global.gameManager.mazes = new Maze();
 				global.gameManager.waiting = true;
 			}, false);
 		}
@@ -117,9 +116,9 @@ function GameManager() {
 	
 	this.Update = function() {
 		//update snake position
-		global.snake.checkCollision();
-		global.mazes.checkCollision();
-		global.snake.move();
+		global.gameManager.snake.checkCollision();
+		global.gameManager.mazes.checkCollision();
+		global.gameManager.snake.move();
 	}
 	
 	this.Draw = function() {
@@ -127,10 +126,10 @@ function GameManager() {
 		canvas.clearRect(0, 0, _canvas.width, _canvas.height);
 		
 		//Draw SnakeHead
-		buffer.drawImage(global.imageSprite, global.snake.xSnakeHeadSprite, global.snake.ySnakeHeadSprite, 25,25, global.snake.xSnakeHeadCanvas, global.snake.ySnakeHeadCanvas, 25,25);
+		buffer.drawImage(global.imageSprite, global.gameManager.snake.xSnakeHeadSprite, global.gameManager.snake.ySnakeHeadSprite, 25,25, global.gameManager.snake.xSnakeHeadCanvas, global.gameManager.snake.ySnakeHeadCanvas, 25,25);
 		
 		//Draw Maze: mazes draw the maze corresponding to the gameStage
-		mazes.draw(buffer, gameStage);
+		global.gameManager.mazes.draw(buffer, global.gameManager.gameStage);
 		
 		canvas.drawImage(_buffer, 0, 0);
 
@@ -138,14 +137,14 @@ function GameManager() {
 	
 	this.Loop = function() {
 		if(self.isPlaying){
-			if(global.snake.speedCounter==0) {
+			if(global.gameManager.snake.speedCounter==0) {
 				self.Update();
 				self.Draw();
 				global.gameManager.waiting = true;
 			}
-			++(global.snake.speedCounter);
-			if(global.snake.speedCounter >= global.snake.speed)
-				global.snake.speedCounter = 0;
+			++(global.gameManager.snake.speedCounter);
+			if(global.gameManager.snake.speedCounter >= global.gameManager.snake.speed)
+				global.gameManager.snake.speedCounter = 0;
 			window.requestAnimFrame(self.Loop);
 		}
 	}
