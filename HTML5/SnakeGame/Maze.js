@@ -40,8 +40,8 @@ function Maze() {
 	this.checkCollision = function(){
 		var xBricks = self.mazes[global.gameManager.gameStage].xBricks;
 		var yBricks = self.mazes[global.gameManager.gameStage].yBricks;
-		var xSnakeHead = global.gameManager.snake.xSnakeHeadCanvas;
-		var ySnakeHead = global.gameManager.snake.ySnakeHeadCanvas;
+		var xSnakeHead = global.gameManager.snake.xSnakeBodyCanvas[0];
+		var ySnakeHead = global.gameManager.snake.ySnakeBodyCanvas[0];
 		
 		for(var index=0; index<xBricks.length; index++){
 			var xBrick = xBricks[index]*global.gameManager.tileWidth;

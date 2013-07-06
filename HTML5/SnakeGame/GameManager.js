@@ -2,7 +2,7 @@
  * Author: monish.gupta1@gmail.com
  * File: GameManager.js
  */
-/* Current Version: working on version 1.2
+/* Current Version: working on version 1.3.1
  * Scope of SNAKE VERSION 1.0 (pathBricks and SnakeHead added)
  *	1. There is only snakeHead, no snakeTail is present.
  *  2. There are only pathBricks present.
@@ -19,14 +19,15 @@
  *	5. BUG FIX: SnakeHead should NOT be allowed to moved in back direction.
  *  
  * Scope for SNAKE VERSION 1.2 (Random Generated Food and snakeHead able to consume it) & make variable of TileWidth and TileHeight & use int for snake's directions instead of string
- * Scope for SNAKE VERSION 1.3 (Snake Tail added)
- * Scope for SNAKE VERSION 1.4 (Snake Tail can now grow on eating food)
+ * Scope for SNAKE VERSION 1.3.1 (Snake Tail added)
+ * Scope for SNAKE VERSION 1.3.2 (Snake Tail can now grow on eating food)
+ * Scope for SNAKE VERSION 1.3.3 (Game start screen added)
+ * Scope for SNAKE VERSION 1.4   (Game end screen added)
  * Scope for SNAKE VERSION 1.5 (mazeBricks dynamic variation feature added)
  * Scope for SNAKE VERSION 1.6 (power food pluggable feature.)
  *  For example, BrickBreaker food can allow snake to destroy and pass through walls for say 10 secs.
  *  For example, MazeFreezer food freezes the dynamic movement of bricks for say 10 secs.
  *  For example, SnakeShortener shortens the snake by 2 units if length of snake is sufficient 
- * Scope for SNAKE VERSION 1.7 (front welcome screen added. Single player game complete i guess)
  * Scope for SNAKE VERSION 1.8 (now 1 or even 2 players can play from same machine)
  * Scope for SNAKE VERSION 1.9 (second player can play from remote machine also)
  *  
@@ -137,7 +138,7 @@ function GameManager() {
 		global.gameManager.food.update();
 		global.gameManager.snake.checkCollision();
 		global.gameManager.mazes.checkCollision();
-		global.gameManager.snake.move();
+		global.gameManager.snake.update();
 	}
 	
 	this.Draw = function() {
@@ -145,13 +146,7 @@ function GameManager() {
 		canvas.clearRect(0, 0, _canvas.width, _canvas.height);
 		
 		//Draw SnakeHead
-		buffer.drawImage(
-			global.imageSprite, 
-			global.gameManager.snake.xSnakeHeadSprite, global.gameManager.snake.ySnakeHeadSprite, 
-			global.gameManager.tileWidth,global.gameManager.tileHeight, 
-			global.gameManager.snake.xSnakeHeadCanvas, global.gameManager.snake.ySnakeHeadCanvas, 
-			global.gameManager.tileWidth,global.gameManager.tileHeight
-		);
+		global.gameManager.snake.draw(buffer);
 		
 		//Draw Maze: mazes draw the maze corresponding to the gameStage
 		global.gameManager.mazes.draw(buffer, global.gameManager.gameStage);

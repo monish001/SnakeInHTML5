@@ -47,7 +47,7 @@ function Food(){
 	}
 
 	this.isCollidingSnake = function(x, y){
-		if(global.gameManager.snake.xSnakeHeadCanvas==x && global.gameManager.snake.ySnakeHeadCanvas==y){
+		if(global.gameManager.snake.xSnakeBodyCanvas[0]==x && global.gameManager.snake.ySnakeBodyCanvas[0]==y){
 			return true;
 		}
 		return false;
