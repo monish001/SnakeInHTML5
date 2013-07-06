@@ -52,7 +52,7 @@ function Snake() {
 		self.xSnakeHeadCanvas = 50;
 		self.ySnakeHeadCanvas = 50;
 		self.ySnakeHeadSprite = 0;
-		self.setDirection("Right");
+		self.setDirection("NOT_DEFINED");
 	}
 	
 	//function checks whether snake head is overlapping with snake body and updates isPlaying flag

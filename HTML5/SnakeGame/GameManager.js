@@ -18,7 +18,7 @@
  *	4. Depending on the location of the last pathBrick the snakeHead has traversed(NWES), it's head would be shown as directed to the corresponding direction.
  *	5. BUG FIX: SnakeHead should NOT be allowed to moved in back direction.
  *  
- * Scope for SNAKE VERSION 1.2 (Random Generated Food and snakeHead able to consume it) & make variable of TileWidth and TileHeight
+ * Scope for SNAKE VERSION 1.2 (Random Generated Food and snakeHead able to consume it) & make variable of TileWidth and TileHeight & use int for snake's directions instead of string
  * Scope for SNAKE VERSION 1.3 (Snake Tail added)
  * Scope for SNAKE VERSION 1.4 (Snake Tail can now grow on eating food)
  * Scope for SNAKE VERSION 1.5 (mazeBricks dynamic variation feature added)
@@ -73,6 +73,9 @@ function GameManager() {
 	var gameStage = null;	
 	var tileHeight = null;
 	var tileWidth = null;
+	var xNumTiles = null;
+	var yNumTiles = null;
+	var food = null;
 
 	//gets reset to true just after drawing of a frame buffer.
 	var waiting = true;
@@ -96,14 +99,18 @@ function GameManager() {
 			
 			global.imageSprite.addEventListener('load', function () {
 				global.gameManager.gameStage = 0;
+				global.gameManager.tileWidth = 25;
+				global.gameManager.tileHeight = 25;
+				global.gameManager.xNumTiles = _canvas.width/global.gameManager.tileWidth;
+				global.gameManager.yNumTiles = _canvas.height/global.gameManager.tileHeight;
+				global.gameManager.food = new Food();
+				global.gameManager.food.Init();
 				global.gameManager.snake = new Snake();
 				global.gameManager.snake.Init();
 				global.gameManager.snake.setSpeed(5);//higher the value lesser is the speed >= 0
 				global.gameManager.eventHandler = new EventHandler();
 				global.gameManager.mazes = new Maze();
 				global.gameManager.waiting = true;
-				global.gameManager.tileWidth = 25;
-				global.gameManager.tileHeight = 25;
 			}, false);
 		}
 	}
@@ -120,6 +127,7 @@ function GameManager() {
 	
 	this.Update = function() {
 		//update snake position
+		global.gameManager.food.update();
 		global.gameManager.snake.checkCollision();
 		global.gameManager.mazes.checkCollision();
 		global.gameManager.snake.move();
@@ -140,7 +148,7 @@ function GameManager() {
 		
 		//Draw Maze: mazes draw the maze corresponding to the gameStage
 		global.gameManager.mazes.draw(buffer, global.gameManager.gameStage);
-		
+		global.gameManager.food.draw(buffer);
 		canvas.drawImage(_buffer, 0, 0);
 
 	}
