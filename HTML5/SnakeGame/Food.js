@@ -48,6 +48,7 @@ function Food(){
 
 	this.isCollidingSnake = function(x, y){
 		if(global.gameManager.snake.xSnakeBodyCanvas[0]==x && global.gameManager.snake.ySnakeBodyCanvas[0]==y){
+			global.gameManager.snake.eatFood();
 			return true;
 		}
 		return false;

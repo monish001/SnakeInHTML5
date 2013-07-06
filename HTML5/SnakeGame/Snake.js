@@ -22,6 +22,11 @@ function Snake() {
 	this.ySnakeHeadSprite = null;
 	this.xSnakeBodySprite = null;
 	this.ySnakeBodySprite = null;
+	this.foodPosition = null;
+	
+	//Data: This is food queue in process of digestion and will contribute in length increase when reached at tail.
+	this.xFoodCanavas = null;
+	this.yFoodCanavas = null;
 
 	//function to update direction and sprite
 	this.setDirection = function(str) {
@@ -58,23 +63,24 @@ function Snake() {
 		//self.ySnakeHeadSprite = 0; -same-
 		self.xSnakeBodySprite = global.gameManager.tileWidth * 2;
 		self.ySnakeBodySprite = global.gameManager.tileHeight * 1;
+		self.foodPosition = new Array(false, false, false);
 		self.setDirection(global.Direction.NOT_DEFINED);
 	}
 	
 	this.draw = function(buffer){
 		buffer.drawImage(
 			global.imageSprite, 
-			global.gameManager.snake.xSnakeHeadSprite, global.gameManager.snake.ySnakeHeadSprite, 
+			self.xSnakeHeadSprite, self.ySnakeHeadSprite, 
 			global.gameManager.tileWidth,global.gameManager.tileHeight, 
-			global.gameManager.snake.xSnakeBodyCanvas[0], global.gameManager.snake.ySnakeBodyCanvas[0], 
+			self.xSnakeBodyCanvas[0], self.ySnakeBodyCanvas[0], 
 			global.gameManager.tileWidth,global.gameManager.tileHeight
 		);
 		for(var bodyPart = 1; bodyPart<self.xSnakeBodyCanvas.length; bodyPart++){
 			buffer.drawImage(
 				global.imageSprite, 
-				global.gameManager.snake.xSnakeBodySprite, global.gameManager.snake.ySnakeBodySprite, 
+				self.xSnakeBodySprite, self.ySnakeBodySprite, 
 				global.gameManager.tileWidth,global.gameManager.tileHeight, 
-				global.gameManager.snake.xSnakeBodyCanvas[bodyPart], global.gameManager.snake.ySnakeBodyCanvas[bodyPart], 
+				self.xSnakeBodyCanvas[bodyPart], self.ySnakeBodyCanvas[bodyPart], 
 				global.gameManager.tileWidth,global.gameManager.tileHeight
 			);
 		}
@@ -84,15 +90,31 @@ function Snake() {
 	this.checkCollision = function(){
 	}
 
+	this.eatFood = function(x,y){
+		self.foodPosition[0] = true;
+	}
 	
 	//function to update move of snake in data structure
 	this.update = function() {
 		if(!global.gameManager.isPlaying)
 			return;
+		var isFoodAtTail = self.foodPosition[self.foodPosition.length-1];
+		//required if above flag is true
+		var xTailPart = self.xSnakeBodyCanvas[self.xSnakeBodyCanvas.length-1];
+		var yTailPart = self.ySnakeBodyCanvas[self.ySnakeBodyCanvas.length-1];
+
 		for(var bodyPart = self.xSnakeBodyCanvas.length-1; bodyPart>0; bodyPart--){
 			self.xSnakeBodyCanvas[bodyPart] = self.xSnakeBodyCanvas[bodyPart-1];
 			self.ySnakeBodyCanvas[bodyPart] = self.ySnakeBodyCanvas[bodyPart-1];
+			self.foodPosition[bodyPart] = self.foodPosition[bodyPart-1];
 		}
+		if(isFoodAtTail){
+			self.foodPosition[self.foodPosition.length] = false;
+			self.xSnakeBodyCanvas[self.xSnakeBodyCanvas.length] = xTailPart;
+			self.ySnakeBodyCanvas[self.ySnakeBodyCanvas.length] = yTailPart;
+		}
+		
+		self.foodPosition[0] = false;
 		switch(self.direction){
 			case global.Direction.LEFT:
 				self.xSnakeBodyCanvas[0] -= global.gameManager.tileWidth;
