@@ -71,6 +71,8 @@ function GameManager() {
 	var mazes = null;
 	var eventHandler = null;
 	var gameStage = null;	
+	var tileHeight = null;
+	var tileWidth = null;
 
 	//gets reset to true just after drawing of a frame buffer.
 	var waiting = true;
@@ -100,6 +102,8 @@ function GameManager() {
 				global.gameManager.eventHandler = new EventHandler();
 				global.gameManager.mazes = new Maze();
 				global.gameManager.waiting = true;
+				global.gameManager.tileWidth = 25;
+				global.gameManager.tileHeight = 25;
 			}, false);
 		}
 	}
@@ -126,7 +130,13 @@ function GameManager() {
 		canvas.clearRect(0, 0, _canvas.width, _canvas.height);
 		
 		//Draw SnakeHead
-		buffer.drawImage(global.imageSprite, global.gameManager.snake.xSnakeHeadSprite, global.gameManager.snake.ySnakeHeadSprite, 25,25, global.gameManager.snake.xSnakeHeadCanvas, global.gameManager.snake.ySnakeHeadCanvas, 25,25);
+		buffer.drawImage(
+			global.imageSprite, 
+			global.gameManager.snake.xSnakeHeadSprite, global.gameManager.snake.ySnakeHeadSprite, 
+			global.gameManager.tileWidth,global.gameManager.tileHeight, 
+			global.gameManager.snake.xSnakeHeadCanvas, global.gameManager.snake.ySnakeHeadCanvas, 
+			global.gameManager.tileWidth,global.gameManager.tileHeight
+		);
 		
 		//Draw Maze: mazes draw the maze corresponding to the gameStage
 		global.gameManager.mazes.draw(buffer, global.gameManager.gameStage);

@@ -8,8 +8,8 @@
 function Maze() {
 
 	//Data: Brick image starting co-ordinates in sprite image
-	this.xBrickSprite = 25;
-	this.yBrickSprite = 25*3;
+	this.xBrickSprite = global.gameManager.tileWidth;
+	this.yBrickSprite = global.gameManager.tileHeight*3;
 	
 	var self = this;
 	var mazes = new Array();
@@ -26,7 +26,12 @@ function Maze() {
 	 */
 	this.draw = function (buffer, gameStage){
 		for(var brick=0; brick<mazes[gameStage].xBricks.length; brick++)
-			buffer.drawImage(global.imageSprite, global.gameManager.mazes.xBrickSprite, global.gameManager.mazes.yBrickSprite, 25, 25, mazes[gameStage].xBricks[brick] * 25, mazes[gameStage].yBricks[brick] * 25, 25,25);
+			buffer.drawImage(global.imageSprite, 
+				global.gameManager.mazes.xBrickSprite, global.gameManager.mazes.yBrickSprite, 
+				global.gameManager.tileWidth,global.gameManager.tileHeight, 
+				mazes[gameStage].xBricks[brick] * global.gameManager.tileWidth, mazes[gameStage].yBricks[brick] * global.gameManager.tileHeight, 
+				global.gameManager.tileWidth,global.gameManager.tileHeight
+			);
 	}
 
 	/*
@@ -39,8 +44,8 @@ function Maze() {
 		var ySnakeHead = global.gameManager.snake.ySnakeHeadCanvas;
 		
 		for(var index=0; index<xBricks.length; index++){
-			var xBrick = xBricks[index]*25;
-			var yBrick = yBricks[index]*25;
+			var xBrick = xBricks[index]*global.gameManager.tileWidth;
+			var yBrick = yBricks[index]*global.gameManager.tileHeight;
 			if(xSnakeHead == xBrick && ySnakeHead == yBrick){
 				global.gameManager.isPlaying = false;
 				break;

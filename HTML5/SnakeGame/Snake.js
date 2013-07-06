@@ -25,11 +25,11 @@ function Snake() {
 		switch(str){
 			case "Left":
 				self.direction = "Left";
-				self.xSnakeHeadSprite = 75;
+				self.xSnakeHeadSprite = global.gameManager.tileWidth * 3;
 				break;
 			case "Right":
 				self.direction = "Right";
-				self.xSnakeHeadSprite = 25;
+				self.xSnakeHeadSprite = global.gameManager.tileWidth * 1;
 				break;
 			case "Up":
 				self.direction = "Up";
@@ -37,7 +37,7 @@ function Snake() {
 				break;
 			case "Down":
 				self.direction = "Down";
-				self.xSnakeHeadSprite = 50;
+				self.xSnakeHeadSprite = global.gameManager.tileWidth * 2;
 				break;
 		}
 	}
@@ -65,22 +65,22 @@ function Snake() {
 			return;
 		switch(self.direction){
 			case "Left":
-				self.xSnakeHeadCanvas -= 25;
+				self.xSnakeHeadCanvas -= global.gameManager.tileWidth;
 				if(self.xSnakeHeadCanvas < 0)
 					self.xSnakeHeadCanvas += _canvas.width;
 				break;
 			case "Right":
-				self.xSnakeHeadCanvas += 25;
+				self.xSnakeHeadCanvas += global.gameManager.tileWidth;
 				if(self.xSnakeHeadCanvas >= _canvas.width)
 					self.xSnakeHeadCanvas -= _canvas.width;
 				break;
 			case "Up":
-				self.ySnakeHeadCanvas -= 25;
+				self.ySnakeHeadCanvas -= global.gameManager.tileHeight;
 				if(self.ySnakeHeadCanvas < 0)
 					self.ySnakeHeadCanvas += _canvas.height;
 				break;
 			case "Down":
-				self.ySnakeHeadCanvas += 25;
+				self.ySnakeHeadCanvas += global.gameManager.tileHeight;
 				if(self.ySnakeHeadCanvas >= _canvas.height)
 					self.ySnakeHeadCanvas -= _canvas.height;
 				break;
