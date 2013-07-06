@@ -55,8 +55,14 @@ function Snake() {
 		self.setDirection("Right");
 	}
 	
+	//function checks whether snake head is overlapping with snake body and updates isPlaying flag
+	this.checkCollision = function(){
+	}
+	
 	//function to update move of snake in data structure
 	this.move = function() {
+		if(!global.gameManager.isPlaying)
+			return;
 		switch(self.direction){
 			case "Left":
 				self.xSnakeHeadCanvas -= 25;

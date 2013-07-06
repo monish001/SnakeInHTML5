@@ -11,13 +11,14 @@
  *	4. Depending on the location of the last pathBrick the snakeHead has traversed(NWES), it's head would be shown as directed to the corresponding direction.
  *  
  * Scope of SNAKE VERSION 1.1 (Snake running automatically and 1 Maze added)
- *	1. There will be only one particular maze. 
- *     It must be written in an extensible fashion so that later(in next versions) on upgrading the stages, differenr mazes could be used.
+ *	1. There will be only one particular maze.
+ *     It must be written in an extensible fashion so that later(in next versions) on upgrading the stages, different mazes could be used.
  *	2. There is only snakeHead, no snakeTail is present. SnakeHead is extensible to facilitate addition of tail feature of given length in the later versions.
  *	3. There are two type of bricks pathBricks and mazeBricks.
  *	4. Depending on the location of the last pathBrick the snakeHead has traversed(NWES), it's head would be shown as directed to the corresponding direction.
+ *	5. BUG FIX: SnakeHead should NOT be allowed to moved in back direction.
  *  
- * Scope for SNAKE VERSION 1.2 (Random Generated Food and snakeHead able to consume it)
+ * Scope for SNAKE VERSION 1.2 (Random Generated Food and snakeHead able to consume it) & make variable of TileWidth and TileHeight
  * Scope for SNAKE VERSION 1.3 (Snake Tail added)
  * Scope for SNAKE VERSION 1.4 (Snake Tail can now grow on eating food)
  * Scope for SNAKE VERSION 1.5 (mazeBricks dynamic variation feature added)
@@ -38,12 +39,15 @@ var _canvas = null;
 var _buffer = null;
 var canvas = null;
 var buffer = null;
+
 var global = this;
 var snake = null;
-var maze = null;
+var mazes = null;
 var eventHandler = null;
 var gameManager = null;
 var imageSprite = null;
+
+var gameStage = null;
 
 /*
  * Thanks to http://stackoverflow.com/questions/5605588/how-to-use-requestanimationframe for this function
@@ -69,6 +73,9 @@ function GameManager() {
 	var self = this;
 	global.gameManager = self;
 
+	//gets reset to true just after drawing of a frame buffer.
+	var waiting = true;
+
 	this.Init = function() {
 		_canvas = document.getElementById('canvas');
 		if (_canvas && _canvas.getContext) {
@@ -87,11 +94,13 @@ function GameManager() {
 			buffer.font = "bold 25px sans-serif";
 			
 			global.imageSprite.addEventListener('load', function () {
+				global.gameStage = 0;
 				global.snake = new Snake();
 				global.snake.Init();
-				global.snake.setSpeed(14);//higher the value lesser is the speed
+				global.snake.setSpeed(0);//higher the value lesser is the speed >= 0
 				global.eventHandler = new EventHandler();
-				global.maze = new Maze();
+				global.mazes = new Maze();
+				global.gameManager.waiting = true;
 			}, false);
 		}
 	}
@@ -108,6 +117,8 @@ function GameManager() {
 	
 	this.Update = function() {
 		//update snake position
+		global.snake.checkCollision();
+		global.mazes.checkCollision();
 		global.snake.move();
 	}
 	
@@ -118,8 +129,8 @@ function GameManager() {
 		//Draw SnakeHead
 		buffer.drawImage(global.imageSprite, global.snake.xSnakeHeadSprite, global.snake.ySnakeHeadSprite, 25,25, global.snake.xSnakeHeadCanvas, global.snake.ySnakeHeadCanvas, 25,25);
 		
-		//Draw Maze
-		maze.draw(buffer);
+		//Draw Maze: mazes draw the maze corresponding to the gameStage
+		mazes.draw(buffer, gameStage);
 		
 		canvas.drawImage(_buffer, 0, 0);
 
@@ -130,6 +141,7 @@ function GameManager() {
 			if(global.snake.speedCounter==0) {
 				self.Update();
 				self.Draw();
+				global.gameManager.waiting = true;
 			}
 			++(global.snake.speedCounter);
 			if(global.snake.speedCounter >= global.snake.speed)

@@ -107,27 +107,35 @@ function EventHandler() {
 	this.keyCheck = function(event){
 		//alert("Event triggered");
 		var keyID = event.keyCode;
-		if(global.gameManager.isPlaying)
+		if(global.gameManager.isPlaying && global.gameManager.waiting)
 		switch(keyID){
 			case Keys.ARROW_LEFT:
 				//alert("arrow left pressed");
-				if(global.snake.direction != "Left")
+				if(global.snake.direction != "Left" && global.snake.direction != "Right"){
 					global.snake.setDirection("Left");
+					global.gameManager.waiting = false;
+				}
 				break;
 			case Keys.ARROW_UP:
 				//alert("arrow up pressed");
-				if(global.snake.direction != "Up")
+				if(global.snake.direction != "Up" && global.snake.direction != "Down"){
 					global.snake.setDirection("Up");
+					global.gameManager.waiting = false;
+				}
 				break;
 			case Keys.ARROW_RIGHT:
 				//alert("arrow right pressed");
-				if(global.snake.direction != "Right")
+				if(global.snake.direction != "Right" && global.snake.direction != "Left"){
 					global.snake.setDirection("Right");
-				break;
+					global.gameManager.waiting = false;
+				}
+				break;	
 			case Keys.ARROW_DOWN:
 				//alert("arrow down pressed");
-				if(global.snake.direction != "Down")
+				if(global.snake.direction != "Down" && global.snake.direction != "Up"){
 					global.snake.setDirection("Down");
+					global.gameManager.waiting = false;
+				}
 				break;
 			case Keys.P:
 				self.pause();
