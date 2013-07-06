@@ -111,29 +111,29 @@ function EventHandler() {
 		switch(keyID){
 			case Keys.ARROW_LEFT:
 				//alert("arrow left pressed");
-				if(global.gameManager.snake.direction != "Left" && global.gameManager.snake.direction != "Right"){
-					global.gameManager.snake.setDirection("Left");
+				if(global.gameManager.snake.direction != global.Direction.LEFT && global.gameManager.snake.direction != global.Direction.RIGHT){
+					global.gameManager.snake.setDirection(global.Direction.LEFT);
 					global.gameManager.waiting = false;
 				}
 				break;
 			case Keys.ARROW_UP:
 				//alert("arrow up pressed");
-				if(global.gameManager.snake.direction != "Up" && global.gameManager.snake.direction != "Down"){
-					global.gameManager.snake.setDirection("Up");
+				if(global.gameManager.snake.direction != global.Direction.UP && global.gameManager.snake.direction != global.Direction.DOWN){
+					global.gameManager.snake.setDirection(global.Direction.UP);
 					global.gameManager.waiting = false;
 				}
 				break;
 			case Keys.ARROW_RIGHT:
 				//alert("arrow right pressed");
-				if(global.gameManager.snake.direction != "Right" && global.gameManager.snake.direction != "Left"){
-					global.gameManager.snake.setDirection("Right");
+				if(global.gameManager.snake.direction != global.Direction.RIGHT && global.gameManager.snake.direction != global.Direction.LEFT){
+					global.gameManager.snake.setDirection(global.Direction.RIGHT);
 					global.gameManager.waiting = false;
 				}
 				break;	
 			case Keys.ARROW_DOWN:
 				//alert("arrow down pressed");
-				if(global.gameManager.snake.direction != "Down" && global.gameManager.snake.direction != "Up"){
-					global.gameManager.snake.setDirection("Down");
+				if(global.gameManager.snake.direction != global.Direction.DOWN && global.gameManager.snake.direction != global.Direction.UP){
+					global.gameManager.snake.setDirection(global.Direction.DOWN);
 					global.gameManager.waiting = false;
 				}
 				break;

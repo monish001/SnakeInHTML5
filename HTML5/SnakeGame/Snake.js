@@ -23,20 +23,20 @@ function Snake() {
 	//function to update direction and sprite
 	this.setDirection = function(str) {
 		switch(str){
-			case "Left":
-				self.direction = "Left";
+			case global.Direction.LEFT:
+				self.direction = global.Direction.LEFT;
 				self.xSnakeHeadSprite = global.gameManager.tileWidth * 3;
 				break;
-			case "Right":
-				self.direction = "Right";
+			case global.Direction.RIGHT:
+				self.direction = global.Direction.RIGHT;
 				self.xSnakeHeadSprite = global.gameManager.tileWidth * 1;
 				break;
-			case "Up":
-				self.direction = "Up";
+			case global.Direction.UP:
+				self.direction = global.Direction.UP;
 				self.xSnakeHeadSprite = 0;
 				break;
-			case "Down":
-				self.direction = "Down";
+			case global.Direction.DOWN:
+				self.direction = global.Direction.DOWN;
 				self.xSnakeHeadSprite = global.gameManager.tileWidth * 2;
 				break;
 		}
@@ -52,7 +52,7 @@ function Snake() {
 		self.xSnakeHeadCanvas = 50;
 		self.ySnakeHeadCanvas = 50;
 		self.ySnakeHeadSprite = 0;
-		self.setDirection("NOT_DEFINED");
+		self.setDirection(global.Direction.NOT_DEFINED);
 	}
 	
 	//function checks whether snake head is overlapping with snake body and updates isPlaying flag
@@ -64,22 +64,22 @@ function Snake() {
 		if(!global.gameManager.isPlaying)
 			return;
 		switch(self.direction){
-			case "Left":
+			case global.Direction.LEFT:
 				self.xSnakeHeadCanvas -= global.gameManager.tileWidth;
 				if(self.xSnakeHeadCanvas < 0)
 					self.xSnakeHeadCanvas += _canvas.width;
 				break;
-			case "Right":
+			case global.Direction.RIGHT:
 				self.xSnakeHeadCanvas += global.gameManager.tileWidth;
 				if(self.xSnakeHeadCanvas >= _canvas.width)
 					self.xSnakeHeadCanvas -= _canvas.width;
 				break;
-			case "Up":
+			case global.Direction.UP:
 				self.ySnakeHeadCanvas -= global.gameManager.tileHeight;
 				if(self.ySnakeHeadCanvas < 0)
 					self.ySnakeHeadCanvas += _canvas.height;
 				break;
-			case "Down":
+			case global.Direction.DOWN:
 				self.ySnakeHeadCanvas += global.gameManager.tileHeight;
 				if(self.ySnakeHeadCanvas >= _canvas.height)
 					self.ySnakeHeadCanvas -= _canvas.height;

@@ -43,6 +43,13 @@ var buffer = null;
 var gameManager = null;
 var global = this;
 var imageSprite = null;
+var Direction = {
+	NOT_DEFINED:0,
+	RIGHT:1,
+	LEFT:2,
+	UP:3,
+	DOWN:4
+};
 
 /*
  * Thanks to http://stackoverflow.com/questions/5605588/how-to-use-requestanimationframe for this function
