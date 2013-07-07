@@ -59,12 +59,12 @@ function Snake() {
 	this.Init = function(){
 		self.xSnakeBodyCanvas = new Array(50,75,100);
 		self.ySnakeBodyCanvas = new Array(50,50, 50);
-		//self.xSnakeHeadSprite = 0; NOT DEFINED as it depends on direction
-		//self.ySnakeHeadSprite = 0; -same-
+		self.xSnakeHeadSprite = global.gameManager.tileWidth * 3;
+		self.ySnakeHeadSprite = global.gameManager.tileHeight * 0;
 		self.xSnakeBodySprite = global.gameManager.tileWidth * 2;
 		self.ySnakeBodySprite = global.gameManager.tileHeight * 1;
 		self.foodPosition = new Array(false, false, false);
-		self.setDirection(global.Direction.NOT_DEFINED);
+		self.setDirection(global.Direction.LEFT);
 	}
 	
 	this.draw = function(buffer){
@@ -86,8 +86,9 @@ function Snake() {
 		}
 	}
 	
-	//function checks whether snake head is overlapping with snake body and updates isPlaying flag
-	this.checkCollision = function(){
+	//function checks whether snake head is overlapping with snake body and updates gameState flag
+	this.isCollision = function(){
+		return false;
 	}
 
 	this.eatFood = function(x,y){
@@ -96,7 +97,7 @@ function Snake() {
 	
 	//function to update move of snake in data structure
 	this.update = function() {
-		if(!global.gameManager.isPlaying)
+		if(global.gameManager.gameState != global.GameState.RUNNING)
 			return;
 		var isFoodAtTail = self.foodPosition[self.foodPosition.length-1];
 		//required if above flag is true

@@ -107,49 +107,39 @@ function EventHandler() {
 	this.keyCheck = function(event){
 		//alert("Event triggered");
 		var keyID = event.keyCode;
-		if(global.gameManager.isPlaying && global.gameManager.waiting)
+		if(global.gameManager.gameState == global.GameState.RUNNING && global.gameManager.waitingForInput)
 		switch(keyID){
 			case Keys.ARROW_LEFT:
 				//alert("arrow left pressed");
 				if(global.gameManager.snake.direction != global.Direction.LEFT && global.gameManager.snake.direction != global.Direction.RIGHT){
 					global.gameManager.snake.setDirection(global.Direction.LEFT);
-					global.gameManager.waiting = false;
 				}
 				break;
 			case Keys.ARROW_UP:
 				//alert("arrow up pressed");
 				if(global.gameManager.snake.direction != global.Direction.UP && global.gameManager.snake.direction != global.Direction.DOWN){
 					global.gameManager.snake.setDirection(global.Direction.UP);
-					global.gameManager.waiting = false;
 				}
 				break;
 			case Keys.ARROW_RIGHT:
 				//alert("arrow right pressed");
 				if(global.gameManager.snake.direction != global.Direction.RIGHT && global.gameManager.snake.direction != global.Direction.LEFT){
 					global.gameManager.snake.setDirection(global.Direction.RIGHT);
-					global.gameManager.waiting = false;
 				}
 				break;	
 			case Keys.ARROW_DOWN:
 				//alert("arrow down pressed");
 				if(global.gameManager.snake.direction != global.Direction.DOWN && global.gameManager.snake.direction != global.Direction.UP){
 					global.gameManager.snake.setDirection(global.Direction.DOWN);
-					global.gameManager.waiting = false;
 				}
 				break;
-			case Keys.P:
-				self.pause();
-				break;
-		} else
-			global.gameManager.startLoop();
+		}
+		if(keyID == Keys.P){
+			global.gameManager.pauseToggle();
+		}
+		global.gameManager.waitingForInput = false;
 	}
 
-	this.pause = function() {
-		if(global.gameManager.isPlaying)
-			global.gameManager.stopLoop();
-		else
-			global.gameManager.startLoop();
-	}
 	window.addEventListener('keydown', self.keyCheck, true);
 	//_canvas.addEventListener('click', self.keyCheck, false);
 }

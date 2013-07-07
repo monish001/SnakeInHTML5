@@ -21,7 +21,8 @@
  * Scope for SNAKE VERSION 1.2 (Random Generated Food and snakeHead able to consume it) & make variable of TileWidth and TileHeight & use int for snake's directions instead of string
  * Scope for SNAKE VERSION 1.3.1 (Snake Tail added)
  * Scope for SNAKE VERSION 1.3.2 (Snake Tail can now grow on eating food)
- * Scope for SNAKE VERSION 1.3.3 (Game start screen added)
+ * Scope for SNAKE VERSION 1.3.3 (Game start screen added) + BUG FIX: brick image co-ordinates were wrong
+ * Scope for SNAKE VERSION 1.3.4 BUG FIX: Food on snake body + Snake can cross itself
  * Scope for SNAKE VERSION 1.4   (Game end screen added)
  * Scope for SNAKE VERSION 1.5 (mazeBricks dynamic variation feature added)
  * Scope for SNAKE VERSION 1.6 (power food pluggable feature.)
@@ -51,6 +52,11 @@ var Direction = {
 	UP:3,
 	DOWN:4
 };
+var GameState = {
+	STOPPED:0,
+	RUNNING:1,
+	PAUSED:2
+};
 
 /*
  * Thanks to http://stackoverflow.com/questions/5605588/how-to-use-requestanimationframe for this function
@@ -72,7 +78,7 @@ window.requestAnimFrame = function(){
  * Template for creating objects of GameManager
  */
 function GameManager() {
-	this.isPlaying = false;
+	this.gameState = global.GameState.STOPPED;
 	var self = this;
 	global.gameManager = self;
 	var snake = null;
@@ -86,7 +92,7 @@ function GameManager() {
 	var food = null;
 
 	//gets reset to true just after drawing of a frame buffer.
-	var waiting = true;
+	var waitingForInput = null;
 
 	this.Init = function() {
 		_canvas = document.getElementById('canvas');
@@ -118,27 +124,19 @@ function GameManager() {
 				global.gameManager.snake.setSpeed(5);//higher the value lesser is the speed >= 0
 				global.gameManager.eventHandler = new EventHandler();
 				global.gameManager.mazes = new Maze();
-				global.gameManager.waiting = true;
+				global.gameManager.waitingForInput = true;
+				
+				global.gameManager.startLoop();
 			}, false);
 		}
-	}
-	
-	this.startLoop = function() {	
-		if(!(self.isPlaying)){
-			self.isPlaying = true;
-			self.Loop();
-		}
-	}
-	this.stopLoop = function() {
-		self.isPlaying = false;
 	}
 	
 	this.Update = function() {
 		//update snake position
 		global.gameManager.food.update();
-		global.gameManager.snake.checkCollision();
-		global.gameManager.mazes.checkCollision();
 		global.gameManager.snake.update();
+		if(global.gameManager.snake.isCollision() || global.gameManager.mazes.isCollision())
+			global.gameManager.stopLoop();
 	}
 	
 	this.Draw = function() {
@@ -156,11 +154,11 @@ function GameManager() {
 	}
 	
 	this.Loop = function() {
-		if(self.isPlaying){
+		if(self.gameState == global.GameState.RUNNING){
 			if(global.gameManager.snake.speedCounter==0) {
 				self.Update();
 				self.Draw();
-				global.gameManager.waiting = true;
+				global.gameManager.waitingForInput = true;
 			}
 			++(global.gameManager.snake.speedCounter);
 			if(global.gameManager.snake.speedCounter >= global.gameManager.snake.speed)
@@ -169,5 +167,21 @@ function GameManager() {
 		}
 	}
 
+	this.pauseToggle = function() {
+		if(global.gameManager.gameState == global.GameState.RUNNING)
+			self.gameState = global.GameState.PAUSED;
+		else
+			global.gameManager.startLoop();
+	}
 
+	this.startLoop = function() {	
+		if(self.gameState != global.GameState.RUNNING){
+			self.gameState = global.GameState.RUNNING;
+			self.Loop();
+		}
+	}
+	this.stopLoop = function() {
+		self.gameState = global.GameState.STOPPED;
+	}
+	
 }
