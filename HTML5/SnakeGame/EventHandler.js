@@ -3,6 +3,7 @@
  * File: EventHandler.js
  */
 var Keys = {
+	CLICK:0,
 	BACKSPACE:8,
 	TAB:9,	ENTER:13,
 	SHIFT:16,
@@ -107,39 +108,62 @@ function EventHandler() {
 	this.keyCheck = function(event){
 		//alert("Event triggered");
 		var keyID = event.keyCode;
-		if(global.gameManager.gameState == global.GameState.RUNNING && global.gameManager.waitingForInput)
 		switch(keyID){
 			case Keys.ARROW_LEFT:
 				//alert("arrow left pressed");
+				if(global.gameManager.gameState == global.GameState.RUNNING && global.gameManager.waitingForInput)
 				if(global.gameManager.snake.direction != global.Direction.LEFT && global.gameManager.snake.direction != global.Direction.RIGHT){
 					global.gameManager.snake.setDirection(global.Direction.LEFT);
 				}
 				break;
 			case Keys.ARROW_UP:
 				//alert("arrow up pressed");
+				if(global.gameManager.gameState == global.GameState.RUNNING && global.gameManager.waitingForInput)
 				if(global.gameManager.snake.direction != global.Direction.UP && global.gameManager.snake.direction != global.Direction.DOWN){
 					global.gameManager.snake.setDirection(global.Direction.UP);
 				}
 				break;
 			case Keys.ARROW_RIGHT:
 				//alert("arrow right pressed");
+				if(global.gameManager.gameState == global.GameState.RUNNING && global.gameManager.waitingForInput)
 				if(global.gameManager.snake.direction != global.Direction.RIGHT && global.gameManager.snake.direction != global.Direction.LEFT){
 					global.gameManager.snake.setDirection(global.Direction.RIGHT);
 				}
 				break;	
 			case Keys.ARROW_DOWN:
 				//alert("arrow down pressed");
+				if(global.gameManager.gameState == global.GameState.RUNNING && global.gameManager.waitingForInput)
 				if(global.gameManager.snake.direction != global.Direction.DOWN && global.gameManager.snake.direction != global.Direction.UP){
 					global.gameManager.snake.setDirection(global.Direction.DOWN);
 				}
 				break;
-		}
-		if(keyID == Keys.P){
-			global.gameManager.pauseToggle();
+			case Keys.P:
+				global.gameManager.pauseToggle();
+				break;
+			case Keys.CLICK:
+				if(global.gameManager.gameState == global.GameState.WELCOME || global.gameManager.gameState == global.GameState.STOPPED)
+				if(typeof event.clientX != 'undefined' && event.clientX >= 50 && event.clientX < 100 )
+				if(typeof event.clientY != 'undefined' && event.clientY >= 50 && event.clientY < 75 ){
+					if(global.gameManager.gameState = global.GameState.STOPPED){
+						global.gameManager.snake.Init();
+						global.gameManager.gameStage = 0;
+					}
+					global.gameManager.gameState = global.GameState.RUNNING;
+				}
+				break;
+			case Keys.ENTER:
+				if(global.gameManager.gameState == global.GameState.WELCOME || global.gameManager.gameState == global.GameState.STOPPED){
+					if(global.gameManager.gameState = global.GameState.STOPPED){
+						global.gameManager.snake.Init();
+						global.gameManager.gameStage = 0;
+					}
+					global.gameManager.gameState = global.GameState.RUNNING;
+				}
+				break;
 		}
 		global.gameManager.waitingForInput = false;
 	}
 
 	window.addEventListener('keydown', self.keyCheck, true);
-	//_canvas.addEventListener('click', self.keyCheck, false);
+	global._canvas.addEventListener('click', self.keyCheck, false);
 }

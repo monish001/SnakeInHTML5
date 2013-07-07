@@ -68,13 +68,6 @@ function Snake() {
 	}
 	
 	this.draw = function(buffer){
-		buffer.drawImage(
-			global.imageSprite, 
-			self.xSnakeHeadSprite, self.ySnakeHeadSprite, 
-			global.gameManager.tileWidth,global.gameManager.tileHeight, 
-			self.xSnakeBodyCanvas[0], self.ySnakeBodyCanvas[0], 
-			global.gameManager.tileWidth,global.gameManager.tileHeight
-		);
 		for(var bodyPart = 1; bodyPart<self.xSnakeBodyCanvas.length; bodyPart++){
 			buffer.drawImage(
 				global.imageSprite, 
@@ -84,11 +77,18 @@ function Snake() {
 				global.gameManager.tileWidth,global.gameManager.tileHeight
 			);
 		}
+		buffer.drawImage(
+			global.imageSprite, 
+			self.xSnakeHeadSprite, self.ySnakeHeadSprite, 
+			global.gameManager.tileWidth,global.gameManager.tileHeight, 
+			self.xSnakeBodyCanvas[0], self.ySnakeBodyCanvas[0], 
+			global.gameManager.tileWidth,global.gameManager.tileHeight
+		);
 	}
 	
-	//function checks whether snake head is overlapping with snake body and updates gameState flag
+	//function checks whether snake head is overlapping with snake body and the caller must updates gameState flag
 	this.isCollision = function(){
-		return false;
+		return false;//TODO
 	}
 
 	this.eatFood = function(x,y){
@@ -97,8 +97,6 @@ function Snake() {
 	
 	//function to update move of snake in data structure
 	this.update = function() {
-		if(global.gameManager.gameState != global.GameState.RUNNING)
-			return;
 		var isFoodAtTail = self.foodPosition[self.foodPosition.length-1];
 		//required if above flag is true
 		var xTailPart = self.xSnakeBodyCanvas[self.xSnakeBodyCanvas.length-1];

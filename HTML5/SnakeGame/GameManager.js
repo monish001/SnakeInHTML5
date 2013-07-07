@@ -21,8 +21,9 @@
  * Scope for SNAKE VERSION 1.2 (Random Generated Food and snakeHead able to consume it) & make variable of TileWidth and TileHeight & use int for snake's directions instead of string
  * Scope for SNAKE VERSION 1.3.1 (Snake Tail added)
  * Scope for SNAKE VERSION 1.3.2 (Snake Tail can now grow on eating food)
- * Scope for SNAKE VERSION 1.3.3 (Game start screen added) + BUG FIX: brick image co-ordinates were wrong
- * Scope for SNAKE VERSION 1.3.4 BUG FIX: Food on snake body + Snake can cross itself
+ * Scope for SNAKE VERSION 1.3.3 (Game start screen added - Logo, PlayOption, Instruction, Controls) + BUG FIX: brick image co-ordinates were wrong
+ * Scope for SNAKE VERSION 1.3.4 Create SpriteManager
+ * Scope for SNAKE VERSION 1.3.5 BUG FIX: Food on snake body + Snake can cross itself
  * Scope for SNAKE VERSION 1.4   (Game end screen added)
  * Scope for SNAKE VERSION 1.5 (mazeBricks dynamic variation feature added)
  * Scope for SNAKE VERSION 1.6 (power food pluggable feature.)
@@ -44,6 +45,7 @@ var buffer = null;
 
 var gameManager = null;
 var global = this;
+var snakeSpeed = 5;
 var imageSprite = null;
 var Direction = {
 	NOT_DEFINED:0,
@@ -53,9 +55,10 @@ var Direction = {
 	DOWN:4
 };
 var GameState = {
-	STOPPED:0,
+	WELCOME:0,
 	RUNNING:1,
-	PAUSED:2
+	PAUSED:2,
+	STOPPED:3
 };
 
 /*
@@ -78,7 +81,7 @@ window.requestAnimFrame = function(){
  * Template for creating objects of GameManager
  */
 function GameManager() {
-	this.gameState = global.GameState.STOPPED;
+	this.gameState = null;
 	var self = this;
 	global.gameManager = self;
 	var snake = null;
@@ -121,34 +124,58 @@ function GameManager() {
 				global.gameManager.food.Init();
 				global.gameManager.snake = new Snake();
 				global.gameManager.snake.Init();
-				global.gameManager.snake.setSpeed(5);//higher the value lesser is the speed >= 0
+				global.gameManager.snake.setSpeed(global.snakeSpeed);//higher the value lesser is the speed >= 0
 				global.gameManager.eventHandler = new EventHandler();
 				global.gameManager.mazes = new Maze();
 				global.gameManager.waitingForInput = true;
 				
+				global.gameManager.gameState = global.GameState.WELCOME;
 				global.gameManager.startLoop();
 			}, false);
 		}
 	}
 	
 	this.Update = function() {
-		//update snake position
-		global.gameManager.food.update();
-		global.gameManager.snake.update();
-		if(global.gameManager.snake.isCollision() || global.gameManager.mazes.isCollision())
-			global.gameManager.stopLoop();
+		switch(global.gameManager.gameState){
+			case global.GameState.RUNNING:
+				global.gameManager.food.update();
+				global.gameManager.snake.update();
+				if(global.gameManager.snake.isCollision() || global.gameManager.mazes.isCollision())
+					global.gameManager.stopLoop();
+				break;
+			case global.GameState.WELCOME:
+				break;
+		}
 	}
 	
 	this.Draw = function() {
 		buffer.clearRect(0, 0, _buffer.width, _buffer.height);
 		canvas.clearRect(0, 0, _canvas.width, _canvas.height);
-		
-		//Draw SnakeHead
-		global.gameManager.snake.draw(buffer);
-		
-		//Draw Maze: mazes draw the maze corresponding to the gameStage
-		global.gameManager.mazes.draw(buffer, global.gameManager.gameStage);
-		global.gameManager.food.draw(buffer);
+
+		switch(global.gameManager.gameState){
+			case global.GameState.RUNNING:
+			case global.GameState.PAUSED:
+				//Draw SnakeHead
+				global.gameManager.snake.draw(buffer);				
+				//Draw Maze: mazes draw the maze corresponding to the gameStage
+				global.gameManager.mazes.draw(buffer, global.gameManager.gameStage);
+				global.gameManager.food.draw(buffer);
+				break;
+			case global.GameState.STOPPED:
+				//Draw SnakeHead
+				global.gameManager.snake.draw(buffer);				
+				//Draw Maze: mazes draw the maze corresponding to the gameStage
+				global.gameManager.mazes.draw(buffer, global.gameManager.gameStage);
+				global.gameManager.food.draw(buffer);
+			case global.GameState.WELCOME:
+				buffer.drawImage(global.imageSprite, 
+					0,50, 
+					global.gameManager.tileWidth*2,global.gameManager.tileHeight, 
+					50,50, 
+					global.gameManager.tileWidth*2,global.gameManager.tileHeight
+				);
+				break;
+		}
 		canvas.drawImage(_buffer, 0, 0);
 
 	}
@@ -163,22 +190,28 @@ function GameManager() {
 			++(global.gameManager.snake.speedCounter);
 			if(global.gameManager.snake.speedCounter >= global.gameManager.snake.speed)
 				global.gameManager.snake.speedCounter = 0;
-			window.requestAnimFrame(self.Loop);
+		}else if(self.gameState == global.GameState.WELCOME){
+			self.Update();
+			self.Draw();
+			global.gameManager.waitingForInput = true;
 		}
+		window.requestAnimFrame(self.Loop);
 	}
 
 	this.pauseToggle = function() {
 		if(global.gameManager.gameState == global.GameState.RUNNING)
 			self.gameState = global.GameState.PAUSED;
-		else
-			global.gameManager.startLoop();
+		else if(global.gameManager.gameState == global.GameState.PAUSED)
+			self.gameState = global.GameState.RUNNING;
 	}
 
 	this.startLoop = function() {	
-		if(self.gameState != global.GameState.RUNNING){
+		if(self.gameState == global.GameState.STOPPED){
 			self.gameState = global.GameState.RUNNING;
 			self.Loop();
 		}
+		else if(self.gameState == global.GameState.WELCOME)
+			self.Loop();
 	}
 	this.stopLoop = function() {
 		self.gameState = global.GameState.STOPPED;
