@@ -5,10 +5,10 @@
 /*
  * Template for creating objects of Snake
  */
-function Snake() {
+function Snake(speedArg) {
 	var self = this;
 	
-	this.speed = null;
+	this.speed = speedArg;
 	this.speedCounter = 0;
 
 	//Data: snake body x and y co-ordinates. 0 index is head
@@ -16,18 +16,22 @@ function Snake() {
 	this.ySnakeBodyCanvas = null
 
 	//Data: snakeHead's Prev position on canvas, used for finding direction of movement.
-	this.direction = null;
+	this.direction = global.Direction.RIGHT;
 
-	this.xSnakeHeadSprite = null;
-	this.ySnakeHeadSprite = null;
-	this.xSnakeBodySprite = null;
-	this.ySnakeBodySprite = null;
-	this.foodPosition = null;
+	this.xSnakeHeadSprite = global.gameManager.tileWidth * 3;
+	this.ySnakeHeadSprite = global.gameManager.tileHeight * 0;
+	this.xSnakeBodySprite = global.gameManager.tileWidth * 2;
+	this.ySnakeBodySprite = global.gameManager.tileHeight * 1;
+	this.foodPosition = new Array(false, false, false);//bool to find if the bodyPart has food in it or not.
 	
 	//Data: This is food queue in process of digestion and will contribute in length increase when reached at tail.
 	this.xFoodCanavas = null;
 	this.yFoodCanavas = null;
 
+	//function init for snake
+	this.xSnakeBodyCanvas = new Array(100,75,50);
+	this.ySnakeBodyCanvas = new Array(50,50, 50);
+	
 	//function to update direction and sprite
 	this.setDirection = function(str) {
 		switch(str){
@@ -55,22 +59,10 @@ function Snake() {
 		self.speed = num;
 	}
 	
-	//function init for snake
-	this.Init = function(){
-		self.xSnakeBodyCanvas = new Array(50,75,100);
-		self.ySnakeBodyCanvas = new Array(50,50, 50);
-		self.xSnakeHeadSprite = global.gameManager.tileWidth * 3;
-		self.ySnakeHeadSprite = global.gameManager.tileHeight * 0;
-		self.xSnakeBodySprite = global.gameManager.tileWidth * 2;
-		self.ySnakeBodySprite = global.gameManager.tileHeight * 1;
-		self.foodPosition = new Array(false, false, false);
-		self.setDirection(global.Direction.LEFT);
-	}
-	
 	this.draw = function(buffer){
 		for(var bodyPart = 1; bodyPart<self.xSnakeBodyCanvas.length; bodyPart++){
 			buffer.drawImage(
-				global.imageSprite, 
+				global.gameManager.spriteManager.gameSprite, 
 				self.xSnakeBodySprite, self.ySnakeBodySprite, 
 				global.gameManager.tileWidth,global.gameManager.tileHeight, 
 				self.xSnakeBodyCanvas[bodyPart], self.ySnakeBodyCanvas[bodyPart], 
@@ -78,7 +70,7 @@ function Snake() {
 			);
 		}
 		buffer.drawImage(
-			global.imageSprite, 
+			global.gameManager.spriteManager.gameSprite, 
 			self.xSnakeHeadSprite, self.ySnakeHeadSprite, 
 			global.gameManager.tileWidth,global.gameManager.tileHeight, 
 			self.xSnakeBodyCanvas[0], self.ySnakeBodyCanvas[0], 

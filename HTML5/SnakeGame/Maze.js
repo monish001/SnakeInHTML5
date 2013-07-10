@@ -26,7 +26,7 @@ function Maze() {
 	 */
 	this.draw = function (buffer, gameStage){
 		for(var brick=0; brick<self.mazes[gameStage].xBricks.length; brick++)
-			buffer.drawImage(global.imageSprite, 
+			buffer.drawImage(global.gameManager.spriteManager.gameSprite, 
 				self.xBrickSprite, self.yBrickSprite, 
 				global.gameManager.tileWidth,global.gameManager.tileHeight, 
 				self.mazes[gameStage].xBricks[brick] * global.gameManager.tileWidth, self.mazes[gameStage].yBricks[brick] * global.gameManager.tileHeight, 

@@ -2,7 +2,7 @@
  * Author: monish.gupta1@gmail.com
  * File: GameManager.js
  */
-/* Current Version: working on version 1.3.3
+/* Current Version: working on version 1.3.5
  * Scope of SNAKE VERSION 1.0 (pathBricks and SnakeHead added)
  *	1. There is only snakeHead, no snakeTail is present.
  *  2. There are only pathBricks present.
@@ -21,9 +21,11 @@
  * Scope for SNAKE VERSION 1.2 (Random Generated Food and snakeHead able to consume it) & make variable of TileWidth and TileHeight & use int for snake's directions instead of string
  * Scope for SNAKE VERSION 1.3.1 (Snake Tail added)
  * Scope for SNAKE VERSION 1.3.2 (Snake Tail can now grow on eating food)
- * Scope for SNAKE VERSION 1.3.3 (Game start screen added - Logo, PlayOption, Instruction, Controls) + BUG FIX: brick image co-ordinates were wrong
+ * Scope for SNAKE VERSION 1.3.3 (Game start screen added - Logo, PlayBtn, Instruction, Controls) + BUG FIX: brick image co-ordinates were wrong
  * Scope for SNAKE VERSION 1.3.4 Create SpriteManager
- * Scope for SNAKE VERSION 1.3.5 BUG FIX: Food on snake body + Snake can cross itself
+ * Scope for SNAKE VERSION 1.3.5 Game End animation added + Move drawing of snake body images to sprite manager
+ * Scope for SNAKE VERSION 1.3.6 BUG FIX: Food on snake body + Snake can cross itself
+ * Scope for SNAKE VERSION 1.3.7 (Game start screen stuff added - Instruction, Controls)
  * Scope for SNAKE VERSION 1.4   (Game end screen added)
  * Scope for SNAKE VERSION 1.5 (mazeBricks dynamic variation feature added)
  * Scope for SNAKE VERSION 1.6 (power food pluggable feature.)
@@ -46,7 +48,7 @@ var buffer = null;
 var gameManager = null;
 var global = this;
 var snakeSpeed = 5;
-var imageSprite = null;
+
 var Direction = {
 	NOT_DEFINED:0,
 	RIGHT:1,
@@ -81,28 +83,29 @@ window.requestAnimFrame = function(){
  * Template for creating objects of GameManager
  */
 function GameManager() {
-	this.gameState = null;
 	var self = this;
 	global.gameManager = self;
+	
+	//Data: objects
 	var snake = null;
 	var mazes = null;
 	var eventHandler = null;
+	this.spriteManager = new SpriteManager();
+	var food = null;
+	
+	//Data: data members
+	var gameState = null;
 	var gameStage = null;	
 	var tileHeight = null;
 	var tileWidth = null;
 	var xNumTiles = null;
 	var yNumTiles = null;
-	var food = null;
 
 	//gets reset to true just after drawing of a frame buffer.
 	var waitingForInput = null;
 
-	this.Init = function() {
 		_canvas = document.getElementById('canvas');
 		if (_canvas && _canvas.getContext) {
-			global.imageSprite = new Image();
-			global.imageSprite.src = 'sprite.png';
-			_canvas.style.backgroundImage=imageSprite;
 			canvas = _canvas.getContext('2d');
 			
 			_buffer = document.createElement('canvas');
@@ -114,7 +117,8 @@ function GameManager() {
 			buffer.fillStyle = "rgb(255, 255, 255)";
 			buffer.font = "bold 25px sans-serif";
 			
-			global.imageSprite.addEventListener('load', function () {
+//			gameManager.spriteManager.bgGameSprite.addEventListener('load', function () {
+			gameManager.spriteManager.gameSprite.addEventListener('load', function () {
 				global.gameManager.gameStage = 0;
 				global.gameManager.tileWidth = 25;
 				global.gameManager.tileHeight = 25;
@@ -122,9 +126,7 @@ function GameManager() {
 				global.gameManager.yNumTiles = _canvas.height/global.gameManager.tileHeight;
 				global.gameManager.food = new Food();
 				global.gameManager.food.Init();
-				global.gameManager.snake = new Snake();
-				global.gameManager.snake.Init();
-				global.gameManager.snake.setSpeed(global.snakeSpeed);//higher the value lesser is the speed >= 0
+				global.gameManager.snake = new Snake(global.snakeSpeed);
 				global.gameManager.eventHandler = new EventHandler();
 				global.gameManager.mazes = new Maze();
 				global.gameManager.waitingForInput = true;
@@ -132,8 +134,8 @@ function GameManager() {
 				global.gameManager.gameState = global.GameState.WELCOME;
 				global.gameManager.startLoop();
 			}, false);
+//			}, false);
 		}
-	}
 	
 	this.Update = function() {
 		switch(global.gameManager.gameState){
@@ -150,7 +152,9 @@ function GameManager() {
 	
 	this.Draw = function() {
 		buffer.clearRect(0, 0, _buffer.width, _buffer.height);
-		canvas.clearRect(0, 0, _canvas.width, _canvas.height);
+		canvas.clearRect(0, 0, _buffer.width, _buffer.height);
+
+		buffer.drawImage(gameManager.spriteManager.bgGameSprite, 0, 0, _buffer.width, _buffer.height);
 
 		switch(global.gameManager.gameState){
 			case global.GameState.RUNNING:
@@ -162,18 +166,20 @@ function GameManager() {
 				global.gameManager.food.draw(buffer);
 				break;
 			case global.GameState.STOPPED:
-				//Draw SnakeHead
-				global.gameManager.snake.draw(buffer);				
-				//Draw Maze: mazes draw the maze corresponding to the gameStage
-				global.gameManager.mazes.draw(buffer, global.gameManager.gameStage);
-				global.gameManager.food.draw(buffer);
-			case global.GameState.WELCOME:
-				buffer.drawImage(global.imageSprite, 
-					0,50, 
-					global.gameManager.tileWidth*2,global.gameManager.tileHeight, 
-					50,50, 
-					global.gameManager.tileWidth*2,global.gameManager.tileHeight
-				);
+				//welcome screen background image
+				gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.BG_WELCOME);
+				//logo
+				gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.LOGO);
+				//play again btn
+				gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.PLAY_AGAIN);
+				break;
+			case global.GameState.WELCOME: //8 0 to 277 176
+				//welcome screen background image
+				gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.BG_WELCOME);
+				//logo
+				gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.LOGO);
+				//play btn
+				gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.PLAY);
 				break;
 		}
 		canvas.drawImage(_buffer, 0, 0);

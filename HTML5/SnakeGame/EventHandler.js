@@ -140,30 +140,31 @@ function EventHandler() {
 			case Keys.P:
 				global.gameManager.pauseToggle();
 				break;
-			case Keys.CLICK:
-				if(global.gameManager.gameState == global.GameState.WELCOME || global.gameManager.gameState == global.GameState.STOPPED)
-				if(typeof event.clientX != 'undefined' && event.clientX >= 50 && event.clientX < 100 )
-				if(typeof event.clientY != 'undefined' && event.clientY >= 50 && event.clientY < 75 ){
-					if(global.gameManager.gameState = global.GameState.STOPPED){
-						global.gameManager.snake.Init();
-						global.gameManager.gameStage = 0;
-					}
-					global.gameManager.gameState = global.GameState.RUNNING;
-				}
-				break;
 			case Keys.ENTER:
 				if(global.gameManager.gameState == global.GameState.WELCOME || global.gameManager.gameState == global.GameState.STOPPED){
 					if(global.gameManager.gameState = global.GameState.STOPPED){
-						global.gameManager.snake.Init();
+						global.gameManager.snake = new Snake(global.snakeSpeed);
 						global.gameManager.gameStage = 0;
 					}
 					global.gameManager.gameState = global.GameState.RUNNING;
+					
 				}
 				break;
 		}
 		global.gameManager.waitingForInput = false;
 	}
 
+	this.clickCheck = function(event){
+		if(
+			(global.gameManager.gameState == global.GameState.WELCOME  && global.gameManager.spriteManager.isPlayBtn(event.clientX, event.clientY))
+			|| (global.gameManager.gameState == global.GameState.STOPPED && global.gameManager.spriteManager.isPlayAgainBtn(event.clientX, event.clientY))
+		){
+			global.gameManager.snake = new Snake(global.snakeSpeed);
+			global.gameManager.gameStage = 0;
+			global.gameManager.gameState = global.GameState.RUNNING;
+		}
+	}
+	
 	window.addEventListener('keydown', self.keyCheck, true);
-	global._canvas.addEventListener('click', self.keyCheck, false);
+	global._canvas.addEventListener('click', self.clickCheck, false);
 }

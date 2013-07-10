@@ -29,7 +29,7 @@ function Food(){
 	}
 	
 	this.draw = function(buffer){
-			buffer.drawImage(global.imageSprite, 
+			buffer.drawImage(global.gameManager.spriteManager.gameSprite, 
 				self.xFoodSprite, self.yFoodSprite, 
 				global.gameManager.tileWidth,global.gameManager.tileHeight, 
 				self.xFoodCanvas, self.yFoodCanvas, 
