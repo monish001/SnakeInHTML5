@@ -23,9 +23,10 @@
  * Scope for SNAKE VERSION 1.3.2 (Snake Tail can now grow on eating food)
  * Scope for SNAKE VERSION 1.3.3 (Game start screen added - Logo, PlayBtn, Instruction, Controls) + BUG FIX: brick image co-ordinates were wrong
  * Scope for SNAKE VERSION 1.3.4 Create SpriteManager
- * Scope for SNAKE VERSION 1.3.5 Game End animation added + Move drawing of snake body images to sprite manager
- * Scope for SNAKE VERSION 1.3.6 BUG FIX: Food on snake body + Snake can cross itself
- * Scope for SNAKE VERSION 1.3.7 (Game start screen stuff added - Instruction, Controls)
+ * Scope for SNAKE VERSION 1.3.5 Change the working to be based on time removing dependency on FPS (thanks to http://viget.com/extend/time-based-animation)
+ * Scope for SNAKE VERSION 1.3.6 Game End animation added + Move drawing of snake body images to sprite manager + fix click of empty space on sides of play btn
+ * Scope for SNAKE VERSION 1.3.7 BUG FIX: Food on snake body + Snake can cross itself
+ * Scope for SNAKE VERSION 1.3.8 (Game start screen stuff added - Instruction, Controls)
  * Scope for SNAKE VERSION 1.4   (Game end screen added)
  * Scope for SNAKE VERSION 1.5 (mazeBricks dynamic variation feature added)
  * Scope for SNAKE VERSION 1.6 (power food pluggable feature.)
@@ -100,6 +101,9 @@ function GameManager() {
 	var tileWidth = null;
 	var xNumTiles = null;
 	var yNumTiles = null;
+	
+	//data: required in draw() for STOPPED state
+	var gameStoppedSince = -1;
 
 	//gets reset to true just after drawing of a frame buffer.
 	var waitingForInput = null;
@@ -166,6 +170,10 @@ function GameManager() {
 				global.gameManager.food.draw(buffer);
 				break;
 			case global.GameState.STOPPED:
+				//TODO: if(gameStoppedSince < animationTimeDuration){
+					//TODO: draw game over animation
+					//break;
+				//}
 				//welcome screen background image
 				gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.BG_WELCOME);
 				//logo
