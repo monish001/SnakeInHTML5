@@ -19,7 +19,7 @@ function SpriteManager(){
 	this.playBtnY = 179;
 	this.playBtnW = 203;
 	this.playBtnH = 50;
-	this.playBtnCanvasX = 280;
+	this.playBtnCanvasX = 180;
 	this.playBtnCanvasY = 350;
 	//play again btn
 	this.playAgainBtnX = 8;
@@ -33,7 +33,7 @@ function SpriteManager(){
 	this.logoY = 0;
 	this.logoW = 269;
 	this.logoH = 176;
-	this.logoCanvasX = 230;
+	this.logoCanvasX = 130;
 	this.logoCanvasY = 140;
 	
 	this.bgWelcomeSprite = new Image();

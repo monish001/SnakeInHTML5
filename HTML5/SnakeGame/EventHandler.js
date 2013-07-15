@@ -110,6 +110,7 @@ function EventHandler() {
 		var keyID = event.keyCode;
 		switch(keyID){
 			case Keys.ARROW_LEFT:
+   case Keys.A:
 				//alert("arrow left pressed");
 				if(global.gameManager.gameState == global.GameState.RUNNING && global.gameManager.waitingForInput)
 				if(global.gameManager.snake.direction != global.Direction.LEFT && global.gameManager.snake.direction != global.Direction.RIGHT){
@@ -117,6 +118,7 @@ function EventHandler() {
 				}
 				break;
 			case Keys.ARROW_UP:
+   case Keys.W:
 				//alert("arrow up pressed");
 				if(global.gameManager.gameState == global.GameState.RUNNING && global.gameManager.waitingForInput)
 				if(global.gameManager.snake.direction != global.Direction.UP && global.gameManager.snake.direction != global.Direction.DOWN){
@@ -124,6 +126,7 @@ function EventHandler() {
 				}
 				break;
 			case Keys.ARROW_RIGHT:
+   case Keys.D:
 				//alert("arrow right pressed");
 				if(global.gameManager.gameState == global.GameState.RUNNING && global.gameManager.waitingForInput)
 				if(global.gameManager.snake.direction != global.Direction.RIGHT && global.gameManager.snake.direction != global.Direction.LEFT){
@@ -131,6 +134,7 @@ function EventHandler() {
 				}
 				break;	
 			case Keys.ARROW_DOWN:
+   case Keys.S:
 				//alert("arrow down pressed");
 				if(global.gameManager.gameState == global.GameState.RUNNING && global.gameManager.waitingForInput)
 				if(global.gameManager.snake.direction != global.Direction.DOWN && global.gameManager.snake.direction != global.Direction.UP){
@@ -141,6 +145,7 @@ function EventHandler() {
 				global.gameManager.pauseToggle();
 				break;
 			case Keys.ENTER:
+   case Keys.N:
 				if(global.gameManager.gameState == global.GameState.WELCOME || global.gameManager.gameState == global.GameState.STOPPED){
 					if(global.gameManager.gameState = global.GameState.STOPPED){
 						global.gameManager.snake = new Snake(global.snakeSpeed);
@@ -165,6 +170,6 @@ function EventHandler() {
 		}
 	}
 	
-	window.addEventListener('keydown', self.keyCheck, true);
+	global._canvas.addEventListener('keydown', self.keyCheck, false);
 	global._canvas.addEventListener('click', self.clickCheck, false);
 }
