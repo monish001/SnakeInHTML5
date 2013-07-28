@@ -39,11 +39,30 @@ function SpriteManager(){
 	this.bgWelcomeSprite = new Image();
 	this.bgWelcomeSprite.src = 'images/WelcomeBack.png';
 	
+	//food
+	this.xFoodSprite = 75;
+	this.yFoodSprite = 25;
+
+	//Data: Brick image starting co-ordinates in sprite image
+	this.xBrickSprite = 25;
+	this.yBrickSprite = 25;
+	
+	//snake
+	this.xSnakeHeadSprite = 75;
+	this.ySnakeHeadSprite = 0;
+	this.xSnakeBodySprite = 50;
+	this.ySnakeBodySprite = 25;
+
+
 	this.ImageId = {
 		BG_WELCOME:0,
 		PLAY:1,
 		PLAY_AGAIN:2,
-		LOGO:3
+		LOGO:3,
+		FOOD:4,
+		SNAKE_HEAD:5,
+		SNAKE_BODY:6,
+		BRICK:7
 	}
 	
 	this.isPlayAgainBtn = function(x, y){
@@ -58,7 +77,7 @@ function SpriteManager(){
 		return false;
 	}
 	
-	this.draw = function(buffer, imageId){
+	this.draw = function(buffer, imageId, xCanvas, yCanvas){
 		switch(imageId){
 			case this.ImageId.BG_WELCOME:
 				buffer.drawImage(gameManager.spriteManager.bgWelcomeSprite, 0, 0, _buffer.width, _buffer.height);
@@ -85,6 +104,38 @@ function SpriteManager(){
 					this.logoW,this.logoH,
 					this.logoCanvasX, this.logoCanvasY,
 					this.logoW,this.logoH
+				);
+				break;
+			case this.ImageId.FOOD:
+				buffer.drawImage(global.gameManager.spriteManager.gameSprite, 
+					this.xFoodSprite, this.yFoodSprite, 
+					global.gameManager.tileWidth,global.gameManager.tileHeight, 
+					xCanvas, yCanvas, 
+					global.gameManager.tileWidth,global.gameManager.tileHeight
+				);
+				break;
+			case this.ImageId.SNAKE_HEAD:
+				buffer.drawImage(global.gameManager.spriteManager.gameSprite, 
+					this.xSnakeHeadSprite, this.ySnakeHeadSprite, 
+					global.gameManager.tileWidth,global.gameManager.tileHeight, 
+					xCanvas, yCanvas, 
+					global.gameManager.tileWidth,global.gameManager.tileHeight
+				);
+				break;
+			case this.ImageId.SNAKE_BODY:
+				buffer.drawImage(global.gameManager.spriteManager.gameSprite, 
+					this.xSnakeBodySprite, this.ySnakeBodySprite, 
+					global.gameManager.tileWidth,global.gameManager.tileHeight, 
+					xCanvas, yCanvas, 
+					global.gameManager.tileWidth,global.gameManager.tileHeight
+				);
+				break;
+			case this.ImageId.BRICK:
+				buffer.drawImage(global.gameManager.spriteManager.gameSprite, 
+					this.xBrickSprite, this.yBrickSprite, 
+					global.gameManager.tileWidth,global.gameManager.tileHeight, 
+					xCanvas, yCanvas, 
+					global.gameManager.tileWidth,global.gameManager.tileHeight
 				);
 				break;
 		}

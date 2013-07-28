@@ -5,14 +5,10 @@
 
 function Food(){
 	var self = this;
-	this.xFoodSprite = null;//3*global.gameManager.tileWidth;
-	this.yFoodSprite = null;//1*global.gameManager.tileHeight;
 	this.xFoodCanvas = null;//global.gameManager.xNumTiles * global.gameManager.tileWidth * Math.random();
 	this.yFoodCanvas = null;//global.gameManager.yNumTiles * global.gameManager.tileHeight * Math.random();
 
 	this.Init = function(){
-		this.xFoodSprite = 3*global.gameManager.tileWidth;
-		this.yFoodSprite = 1*global.gameManager.tileHeight;
 		this.xFoodCanvas = parseInt(global.gameManager.xNumTiles * Math.random()) * global.gameManager.tileWidth;
 		this.yFoodCanvas = parseInt(global.gameManager.yNumTiles * Math.random()) * global.gameManager.tileHeight;
 	}
@@ -29,12 +25,7 @@ function Food(){
 	}
 	
 	this.draw = function(buffer){
-			buffer.drawImage(global.gameManager.spriteManager.gameSprite, 
-				self.xFoodSprite, self.yFoodSprite, 
-				global.gameManager.tileWidth,global.gameManager.tileHeight, 
-				self.xFoodCanvas, self.yFoodCanvas, 
-				global.gameManager.tileWidth,global.gameManager.tileHeight
-			);
+		gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.FOOD, self.xFoodCanvas, self.yFoodCanvas);
 	}
 
 	this.isCollidingMaze = function(x, y){

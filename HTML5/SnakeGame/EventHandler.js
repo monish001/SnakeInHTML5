@@ -110,34 +110,38 @@ function EventHandler() {
 		var keyID = event.keyCode;
 		switch(keyID){
 			case Keys.ARROW_LEFT:
-   case Keys.A:
+			case Keys.A:
 				//alert("arrow left pressed");
 				if(global.gameManager.gameState == global.GameState.RUNNING && global.gameManager.waitingForInput)
 				if(global.gameManager.snake.direction != global.Direction.LEFT && global.gameManager.snake.direction != global.Direction.RIGHT){
+					event.preventDefault();
 					global.gameManager.snake.setDirection(global.Direction.LEFT);
 				}
 				break;
 			case Keys.ARROW_UP:
-   case Keys.W:
+			case Keys.W:
 				//alert("arrow up pressed");
 				if(global.gameManager.gameState == global.GameState.RUNNING && global.gameManager.waitingForInput)
 				if(global.gameManager.snake.direction != global.Direction.UP && global.gameManager.snake.direction != global.Direction.DOWN){
+					event.preventDefault();
 					global.gameManager.snake.setDirection(global.Direction.UP);
 				}
 				break;
 			case Keys.ARROW_RIGHT:
-   case Keys.D:
+			case Keys.D:
 				//alert("arrow right pressed");
 				if(global.gameManager.gameState == global.GameState.RUNNING && global.gameManager.waitingForInput)
 				if(global.gameManager.snake.direction != global.Direction.RIGHT && global.gameManager.snake.direction != global.Direction.LEFT){
+					event.preventDefault();
 					global.gameManager.snake.setDirection(global.Direction.RIGHT);
 				}
 				break;	
 			case Keys.ARROW_DOWN:
-   case Keys.S:
+			case Keys.S:
 				//alert("arrow down pressed");
 				if(global.gameManager.gameState == global.GameState.RUNNING && global.gameManager.waitingForInput)
 				if(global.gameManager.snake.direction != global.Direction.DOWN && global.gameManager.snake.direction != global.Direction.UP){
+					event.preventDefault();
 					global.gameManager.snake.setDirection(global.Direction.DOWN);
 				}
 				break;
@@ -145,8 +149,9 @@ function EventHandler() {
 				global.gameManager.pauseToggle();
 				break;
 			case Keys.ENTER:
-   case Keys.N:
+				case Keys.N:
 				if(global.gameManager.gameState == global.GameState.WELCOME || global.gameManager.gameState == global.GameState.STOPPED){
+					event.preventDefault();
 					if(global.gameManager.gameState = global.GameState.STOPPED){
 						global.gameManager.snake = new Snake(global.snakeSpeed);
 						global.gameManager.gameStage = 0;
@@ -160,9 +165,9 @@ function EventHandler() {
 	}
 
 	this.clickCheck = function(event){
-		if(
-			(global.gameManager.gameState == global.GameState.WELCOME  && global.gameManager.spriteManager.isPlayBtn(event.clientX, event.clientY))
-			|| (global.gameManager.gameState == global.GameState.STOPPED && global.gameManager.spriteManager.isPlayAgainBtn(event.clientX, event.clientY))
+			if(
+			(global.gameManager.gameState == global.GameState.WELCOME  && global.gameManager.spriteManager.isPlayBtn(event.clientX - global._canvas.offsetLeft, event.clientY - global._canvas.offsetTop))
+			|| (global.gameManager.gameState == global.GameState.STOPPED && global.gameManager.spriteManager.isPlayAgainBtn(event.clientX - global._canvas.offsetLeft, event.clientY - global._canvas.offsetTop))
 		){
 			global.gameManager.snake = new Snake(global.snakeSpeed);
 			global.gameManager.gameStage = 0;
@@ -170,6 +175,6 @@ function EventHandler() {
 		}
 	}
 	
-	global._canvas.addEventListener('keydown', self.keyCheck, false);
+	window.addEventListener('keydown', self.keyCheck, false);
 	global._canvas.addEventListener('click', self.clickCheck, false);
 }

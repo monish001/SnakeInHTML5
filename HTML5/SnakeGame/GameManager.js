@@ -2,7 +2,7 @@
  * Author: monish.gupta1@gmail.com
  * File: GameManager.js
  */
-/* Current Version: working on version 1.3.5
+/* Current Version: working on version 1.3.4.2
  * Scope of SNAKE VERSION 1.0 (pathBricks and SnakeHead added)
  *	1. There is only snakeHead, no snakeTail is present.
  *  2. There are only pathBricks present.
@@ -23,6 +23,8 @@
  * Scope for SNAKE VERSION 1.3.2 (Snake Tail can now grow on eating food)
  * Scope for SNAKE VERSION 1.3.3 (Game start screen added - Logo, PlayBtn, Instruction, Controls) + BUG FIX: brick image co-ordinates were wrong
  * Scope for SNAKE VERSION 1.3.4 Create SpriteManager
+ * Scope for SNAKE VERSION 1.3.4.1 Move all sprite drawing in SpriteManager
+ * Scope for SNAKE VERSION 1.3.4.2 Make the game window size aware
  * Scope for SNAKE VERSION 1.3.5 Change the working to be based on time removing dependency on FPS (thanks to http://viget.com/extend/time-based-animation)
  * Scope for SNAKE VERSION 1.3.6 Game End animation added + Move drawing of snake body images to sprite manager + fix click of empty space on sides of play btn
  * Scope for SNAKE VERSION 1.3.7 Keep logo and btns in center irrespective of canvas width + BUG FIX: Food on snake body + Snake can cross itself
@@ -124,10 +126,12 @@ function GameManager() {
 //			gameManager.spriteManager.bgGameSprite.addEventListener('load', function () {
 			gameManager.spriteManager.gameSprite.addEventListener('load', function () {
 				global.gameManager.gameStage = 0;
-				global.gameManager.tileWidth = 25;
-				global.gameManager.tileHeight = 25;
-				global.gameManager.xNumTiles = _canvas.width/global.gameManager.tileWidth;
-				global.gameManager.yNumTiles = _canvas.height/global.gameManager.tileHeight;
+				global.gameManager.xNumTiles = 23;//_canvas.width/global.gameManager.tileWidth;
+				global.gameManager.yNumTiles = 24;//_canvas.height/global.gameManager.tileHeight;
+
+				global.gameManager.tileWidth = _canvas.width/global.gameManager.xNumTiles;
+				global.gameManager.tileHeight = _canvas.height/global.gameManager.yNumTiles;
+
 				global.gameManager.food = new Food();
 				global.gameManager.food.Init();
 				global.gameManager.snake = new Snake(global.snakeSpeed);

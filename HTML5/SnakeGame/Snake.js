@@ -18,10 +18,6 @@ function Snake(speedArg) {
 	//Data: snakeHead's Prev position on canvas, used for finding direction of movement.
 	this.direction = global.Direction.RIGHT;
 
-	this.xSnakeHeadSprite = global.gameManager.tileWidth * 3;
-	this.ySnakeHeadSprite = global.gameManager.tileHeight * 0;
-	this.xSnakeBodySprite = global.gameManager.tileWidth * 2;
-	this.ySnakeBodySprite = global.gameManager.tileHeight * 1;
 	this.foodPosition = new Array(false, false, false);//bool to find if the bodyPart has food in it or not.
 	
 	//Data: This is food queue in process of digestion and will contribute in length increase when reached at tail.
@@ -61,20 +57,12 @@ function Snake(speedArg) {
 	
 	this.draw = function(buffer){
 		for(var bodyPart = 1; bodyPart<self.xSnakeBodyCanvas.length; bodyPart++){
-			buffer.drawImage(
-				global.gameManager.spriteManager.gameSprite, 
-				self.xSnakeBodySprite, self.ySnakeBodySprite, 
-				global.gameManager.tileWidth,global.gameManager.tileHeight, 
-				self.xSnakeBodyCanvas[bodyPart], self.ySnakeBodyCanvas[bodyPart], 
-				global.gameManager.tileWidth,global.gameManager.tileHeight
+			gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.SNAKE_BODY, 
+				self.xSnakeBodyCanvas[bodyPart], self.ySnakeBodyCanvas[bodyPart]
 			);
 		}
-		buffer.drawImage(
-			global.gameManager.spriteManager.gameSprite, 
-			self.xSnakeHeadSprite, self.ySnakeHeadSprite, 
-			global.gameManager.tileWidth,global.gameManager.tileHeight, 
-			self.xSnakeBodyCanvas[0], self.ySnakeBodyCanvas[0], 
-			global.gameManager.tileWidth,global.gameManager.tileHeight
+		gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.SNAKE_HEAD, 
+			self.xSnakeBodyCanvas[0], self.ySnakeBodyCanvas[0]
 		);
 	}
 	
