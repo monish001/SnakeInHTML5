@@ -25,27 +25,23 @@ function Snake(speedArg) {
 	this.yFoodCanavas = null;
 
 	//function init for snake
-	this.xSnakeBodyCanvas = new Array(100,75,50);
-	this.ySnakeBodyCanvas = new Array(50,50, 50);
+	this.xSnakeBodyCanvas = new Array(4,3,2);
+	this.ySnakeBodyCanvas = new Array(2,2,2);
 	
 	//function to update direction and sprite
 	this.setDirection = function(str) {
 		switch(str){
 			case global.Direction.LEFT:
 				self.direction = global.Direction.LEFT;
-				self.xSnakeHeadSprite = global.gameManager.tileWidth * 3;
 				break;
 			case global.Direction.RIGHT:
 				self.direction = global.Direction.RIGHT;
-				self.xSnakeHeadSprite = global.gameManager.tileWidth * 1;
 				break;
 			case global.Direction.UP:
 				self.direction = global.Direction.UP;
-				self.xSnakeHeadSprite = 0;
 				break;
 			case global.Direction.DOWN:
 				self.direction = global.Direction.DOWN;
-				self.xSnakeHeadSprite = global.gameManager.tileWidth * 2;
 				break;
 		}
 	}
@@ -96,24 +92,24 @@ function Snake(speedArg) {
 		self.foodPosition[0] = false;
 		switch(self.direction){
 			case global.Direction.LEFT:
-				self.xSnakeBodyCanvas[0] -= global.gameManager.tileWidth;
+				self.xSnakeBodyCanvas[0] -= 1;
 				if(self.xSnakeBodyCanvas[0] < 0)
-					self.xSnakeBodyCanvas[0] += _canvas.width;
+					self.xSnakeBodyCanvas[0] += global.gameManager.xNumTiles;
 				break;
 			case global.Direction.RIGHT:
-				self.xSnakeBodyCanvas[0] += global.gameManager.tileWidth;
-				if(self.xSnakeBodyCanvas[0] >= _canvas.width)
-					self.xSnakeBodyCanvas[0] -= _canvas.width;
+				self.xSnakeBodyCanvas[0] += 1;
+				if(self.xSnakeBodyCanvas[0] >= global.gameManager.xNumTiles)
+					self.xSnakeBodyCanvas[0] -= global.gameManager.xNumTiles;
 				break;
 			case global.Direction.UP:
-				self.ySnakeBodyCanvas[0] -= global.gameManager.tileHeight;
+				self.ySnakeBodyCanvas[0] -= 1;
 				if(self.ySnakeBodyCanvas[0] < 0)
-					self.ySnakeBodyCanvas[0] += _canvas.height;
+					self.ySnakeBodyCanvas[0] += global.gameManager.yNumTiles;
 				break;
 			case global.Direction.DOWN:
-				self.ySnakeBodyCanvas[0] += global.gameManager.tileHeight;
-				if(self.ySnakeBodyCanvas[0] >= _canvas.height)
-					self.ySnakeBodyCanvas[0] -= _canvas.height;
+				self.ySnakeBodyCanvas[0] += 1;
+				if(self.ySnakeBodyCanvas[0] >= global.gameManager.yNumTiles)
+					self.ySnakeBodyCanvas[0] -= global.gameManager.yNumTiles;
 				break;
 		}
 	}

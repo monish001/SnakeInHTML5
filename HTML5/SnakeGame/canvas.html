@@ -1,20 +1,38 @@
 <!DOCTYPE html>
 <html>
 <body bgcolor="#808080">
+	<style type="text/css">
+#gameArea {
+  position: absolute;
+  left:     50%;
+  top:      50%;
+}
+#gameCanvas {
+  width: 100%;
+  height: 92%;
+}
+#statsPanel {
+  position: absolute;
+  width: 100%;
+  height: 8%;
+  bottom: 0;
+  opacity: 0.8;
+}
+	</style>	
+<script src="Utility.js"></script>
 <script src="SpriteManager.js"></script>
 <script src="Maze.js"></script>
 <script src="Snake.js"></script>
 <script src="EventHandler.js"></script>
 <script src="Food.js"></script>
 <script src="GameManager.js"></script> 
-	<div align="left">
-	<canvas id="canvas" width="575" height="600">
-		Canvas Not Supported.  :(
-	</canvas>
+<div id="gameArea">
+  <canvas id="gameCanvas">Canvas Not Supported.  :(</canvas>
+  <div id="statsPanel"></div>
 	<script type="text/javascript">
 		var play = new GameManager();
 	</script>
-	</div>
+</div>
 </body>
 
 </html>

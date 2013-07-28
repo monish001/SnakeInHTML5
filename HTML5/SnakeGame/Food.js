@@ -5,20 +5,20 @@
 
 function Food(){
 	var self = this;
-	this.xFoodCanvas = null;//global.gameManager.xNumTiles * global.gameManager.tileWidth * Math.random();
-	this.yFoodCanvas = null;//global.gameManager.yNumTiles * global.gameManager.tileHeight * Math.random();
+	this.xFoodCanvas = null;
+	this.yFoodCanvas = null;
 
 	this.Init = function(){
-		this.xFoodCanvas = parseInt(global.gameManager.xNumTiles * Math.random()) * global.gameManager.tileWidth;
-		this.yFoodCanvas = parseInt(global.gameManager.yNumTiles * Math.random()) * global.gameManager.tileHeight;
+		this.xFoodCanvas = parseInt(global.gameManager.xNumTiles * Math.random());
+		this.yFoodCanvas = parseInt(global.gameManager.yNumTiles * Math.random());
 	}
 
 	this.update = function(){
 		var x = self.xFoodCanvas;
 		var y = self.yFoodCanvas;
 		while(self.isCollidingSnake(x, y) || self.isCollidingMaze(x, y)){
-			x = parseInt(global.gameManager.xNumTiles * Math.random()) * global.gameManager.tileWidth;
-			y = parseInt(global.gameManager.yNumTiles * Math.random()) * global.gameManager.tileHeight;
+			x = parseInt(global.gameManager.xNumTiles * Math.random());
+			y = parseInt(global.gameManager.yNumTiles * Math.random());
 		}
 		self.xFoodCanvas = x;
 		self.yFoodCanvas = y;
@@ -31,7 +31,7 @@ function Food(){
 	this.isCollidingMaze = function(x, y){
 		var maze = global.gameManager.mazes.mazes[global.gameManager.gameStage];
 		for(var brick=0; brick<maze.xBricks.length; brick++){
-			if(x==maze.xBricks[brick] * global.gameManager.tileWidth && y==maze.yBricks[brick] * global.gameManager.tileHeight)
+			if(x==maze.xBricks[brick] && y==maze.yBricks[brick])
 				return true;
 		}
 		return false;

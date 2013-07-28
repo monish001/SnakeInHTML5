@@ -2,7 +2,7 @@
  * Author: monish.gupta1@gmail.com
  * File: GameManager.js
  */
-/* Current Version: working on version 1.3.4.2
+/* Current Version: working on version 1.3.5
  * Scope of SNAKE VERSION 1.0 (pathBricks and SnakeHead added)
  *	1. There is only snakeHead, no snakeTail is present.
  *  2. There are only pathBricks present.
@@ -104,48 +104,89 @@ function GameManager() {
 	var xNumTiles = null;
 	var yNumTiles = null;
 	
+	var windowHeight = window.innerWidth;
+	var windowWidth = window.innerHeight;
+	
 	//data: required in draw() for STOPPED state
 	var gameStoppedSince = -1;
 
 	//gets reset to true just after drawing of a frame buffer.
 	var waitingForInput = null;
 
-		_canvas = document.getElementById('canvas');
-		if (_canvas && _canvas.getContext) {
-			canvas = _canvas.getContext('2d');
-			
-			_buffer = document.createElement('canvas');
-			_buffer.width = _canvas.width;
-			_buffer.height = _canvas.height;
-			buffer = _buffer.getContext('2d');
-			
-			buffer.strokeStyle = "rgb(255, 255, 255)";
-			buffer.fillStyle = "rgb(255, 255, 255)";
-			buffer.font = "bold 25px sans-serif";
-			
-//			gameManager.spriteManager.bgGameSprite.addEventListener('load', function () {
-			gameManager.spriteManager.gameSprite.addEventListener('load', function () {
-				global.gameManager.gameStage = 0;
-				global.gameManager.xNumTiles = 23;//_canvas.width/global.gameManager.tileWidth;
-				global.gameManager.yNumTiles = 24;//_canvas.height/global.gameManager.tileHeight;
+	//window.addEventListener('resize', this.Update, false);
+	//window.addEventListener('orientationchange', this.resizeGame, false);
 
-				global.gameManager.tileWidth = _canvas.width/global.gameManager.xNumTiles;
-				global.gameManager.tileHeight = _canvas.height/global.gameManager.yNumTiles;
-
-				global.gameManager.food = new Food();
-				global.gameManager.food.Init();
-				global.gameManager.snake = new Snake(global.snakeSpeed);
-				global.gameManager.eventHandler = new EventHandler();
-				global.gameManager.mazes = new Maze();
-				global.gameManager.waitingForInput = true;
-				
-				global.gameManager.gameState = global.GameState.WELCOME;
-				global.gameManager.startLoop();
-			}, false);
-//			}, false);
-		}
+	_canvas = document.getElementById('gameCanvas');
+	if (_canvas && _canvas.getContext) {
+		canvas = _canvas.getContext('2d');
+		
+		_buffer = document.createElement('canvas');
+		_buffer.width = _canvas.width;
+		_buffer.height = _canvas.height;
+		buffer = _buffer.getContext('2d');
+		
+		buffer.strokeStyle = "rgb(255, 255, 255)";
+		buffer.fillStyle = "rgb(255, 255, 255)";
+		buffer.font = "bold 25px sans-serif";
+		
+		gameManager.spriteManager.gameSprite.addEventListener('load', function () {
+			global.gameManager.gameStage = 0;
+			global.gameManager.xNumTiles = 23;//_canvas.width/global.gameManager.tileWidth;
+			global.gameManager.yNumTiles = 24;//_canvas.height/global.gameManager.tileHeight;
+			global.gameManager.tileWidth = _canvas.width/global.gameManager.xNumTiles;
+			global.gameManager.tileHeight = _canvas.height/global.gameManager.yNumTiles;
+			global.gameManager.food = new Food();
+			global.gameManager.food.Init();
+			global.gameManager.snake = new Snake(global.snakeSpeed);
+			global.gameManager.eventHandler = new EventHandler();
+			global.gameManager.mazes = new Maze();
+			global.gameManager.waitingForInput = true;
+			
+			global.gameManager.gameState = global.GameState.WELCOME;
+			global.gameManager.startLoop();
+		}, false);
+	}
 	
+	this.resizeGame = function() {
+		var gameArea = document.getElementById('gameArea');
+		var widthToHeight = 4 / 3;
+		var newWidth = window.innerWidth;
+		var newHeight = window.innerHeight;
+		var newWidthToHeight = newWidth / newHeight;
+		
+		if (newWidthToHeight > widthToHeight) {
+			newWidth = newHeight * widthToHeight;
+			gameArea.style.height = newHeight + 'px';
+			gameArea.style.width = newWidth + 'px';
+		} else {
+			newHeight = newWidth / widthToHeight;
+			gameArea.style.width = newWidth + 'px';
+			gameArea.style.height = newHeight + 'px';
+		}
+		
+		gameArea.style.marginTop = (-newHeight / 2) + 'px';
+		gameArea.style.marginLeft = (-newWidth / 2) + 'px';
+		
+		var gameCanvas = document.getElementById('gameCanvas');
+		gameCanvas.width = newWidth;
+		gameCanvas.height = newHeight;
+
+		global.gameManager.tileWidth = gameCanvas.width/global.gameManager.xNumTiles;
+		global.gameManager.tileHeight = gameCanvas.height/global.gameManager.yNumTiles;
+		
+	}
+
 	this.Update = function() {
+		if(global.gameManager.windowHeight != window.innerWidth || global.gameManager.windowWidth != window.innerHeight){
+			global.gameManager.windowHeight = window.innerHeight;
+			global.gameManager.windowWidth = window.innerWidth;
+		
+			this.resizeGame();
+			var gameCanvas = document.getElementById('gameCanvas');
+			_buffer.width = gameCanvas.width;
+			_buffer.height = gameCanvas.height;
+		}
+
 		switch(global.gameManager.gameState){
 			case global.GameState.RUNNING:
 				global.gameManager.food.update();

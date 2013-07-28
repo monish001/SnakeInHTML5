@@ -53,7 +53,7 @@ function SpriteManager(){
 	this.xSnakeBodySprite = 50;
 	this.ySnakeBodySprite = 25;
 
-
+	
 	this.ImageId = {
 		BG_WELCOME:0,
 		PLAY:1,
@@ -109,32 +109,32 @@ function SpriteManager(){
 			case this.ImageId.FOOD:
 				buffer.drawImage(global.gameManager.spriteManager.gameSprite, 
 					this.xFoodSprite, this.yFoodSprite, 
-					global.gameManager.tileWidth,global.gameManager.tileHeight, 
-					xCanvas, yCanvas, 
+					1,1,//global.gameManager.tileWidth,global.gameManager.tileHeight, 
+					xCanvas*global.gameManager.tileWidth, yCanvas*global.gameManager.tileHeight, 
 					global.gameManager.tileWidth,global.gameManager.tileHeight
 				);
 				break;
 			case this.ImageId.SNAKE_HEAD:
 				buffer.drawImage(global.gameManager.spriteManager.gameSprite, 
 					this.xSnakeHeadSprite, this.ySnakeHeadSprite, 
-					global.gameManager.tileWidth,global.gameManager.tileHeight, 
-					xCanvas, yCanvas, 
+					1,1,//global.gameManager.tileWidth,global.gameManager.tileHeight, 
+					xCanvas*global.gameManager.tileWidth, yCanvas*global.gameManager.tileHeight, 
 					global.gameManager.tileWidth,global.gameManager.tileHeight
 				);
 				break;
 			case this.ImageId.SNAKE_BODY:
 				buffer.drawImage(global.gameManager.spriteManager.gameSprite, 
 					this.xSnakeBodySprite, this.ySnakeBodySprite, 
-					global.gameManager.tileWidth,global.gameManager.tileHeight, 
-					xCanvas, yCanvas, 
+					1,1,//global.gameManager.tileWidth,global.gameManager.tileHeight, 
+					xCanvas*global.gameManager.tileWidth, yCanvas*global.gameManager.tileHeight, 
 					global.gameManager.tileWidth,global.gameManager.tileHeight
 				);
 				break;
 			case this.ImageId.BRICK:
 				buffer.drawImage(global.gameManager.spriteManager.gameSprite, 
 					this.xBrickSprite, this.yBrickSprite, 
-					global.gameManager.tileWidth,global.gameManager.tileHeight, 
-					xCanvas, yCanvas, 
+					1,1,//global.gameManager.tileWidth,global.gameManager.tileHeight, 
+					xCanvas*global.gameManager.tileWidth, yCanvas*global.gameManager.tileHeight, 
 					global.gameManager.tileWidth,global.gameManager.tileHeight
 				);
 				break;
