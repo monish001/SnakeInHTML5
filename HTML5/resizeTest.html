@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<body bgcolor="#808080">
+	<style type="text/css">
+		#gameArea {
+		  position: absolute;
+		  left:     50%;
+		  top:      50%;
+		}
+#gameCanvas {
+  width: 100%;
+  height: 100%;
+}
+#statsPanel {
+  position: absolute;
+  width: 100%;
+  height: 8%;
+  bottom: 0;
+  opacity: 0.8;
+}
+	</style>	
+	<script type="text/javascript">
+function resizeGame() {
+    var gameArea = document.getElementById('gameArea');
+    var widthToHeight = 4 / 3;
+    var newWidth = window.innerWidth;
+    var newHeight = window.innerHeight;
+    var newWidthToHeight = newWidth / newHeight;
+    
+    if (newWidthToHeight > widthToHeight) {
+        newWidth = newHeight * widthToHeight;
+        gameArea.style.height = newHeight + 'px';
+        gameArea.style.width = newWidth + 'px';
+    } else {
+        newHeight = newWidth / widthToHeight;
+        gameArea.style.width = newWidth + 'px';
+        gameArea.style.height = newHeight + 'px';
+    }
+    
+    gameArea.style.marginTop = (-newHeight / 2) + 'px';
+    gameArea.style.marginLeft = (-newWidth / 2) + 'px';
+    
+    var gameCanvas = document.getElementById('gameCanvas');
+    gameCanvas.width = newWidth;
+    gameCanvas.height = newHeight;
+}
+window.addEventListener('resize', resizeGame, false);
+window.addEventListener('orientationchange', resizeGame, false);
+	</script>
+<div id="gameArea">
+  <canvas id="gameCanvas">Canvas Not Supported.  :(</canvas>
+  <div id="statsPanel"></div>
+</div>
+	<script type="text/javascript">
+		//var play = new GameManager();
+	</script>
+	</div>
+</body>
+
+</html>
