@@ -12,11 +12,14 @@
   height: 92%;
 }
 #statsPanel {
+  text-align:center;
   position: absolute;
   width: 100%;
   height: 8%;
   bottom: 0;
-  opacity: 0.8;
+  opacity: 0.9;
+  background-color:#FFFFFF;
+  font-size:1.5em;
 }
 	</style>	
 <script src="Utility.js"></script>
@@ -28,7 +31,7 @@
 <script src="GameManager.js"></script> 
 <div id="gameArea">
   <canvas id="gameCanvas">Canvas Not Supported.  :(</canvas>
-  <div id="statsPanel"></div>
+	<div id="statsPanel">Controls: ENTER, P and Arrow Keys</div>
 	<script type="text/javascript">
 		var play = new GameManager();
 	</script>

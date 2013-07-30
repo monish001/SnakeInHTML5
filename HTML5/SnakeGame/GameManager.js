@@ -2,7 +2,7 @@
  * Author: monish.gupta1@gmail.com
  * File: GameManager.js
  */
-/* Current Version: working on version 1.3.5
+/* Current Version: working on version 1.3.5.1
  * Scope of SNAKE VERSION 1.0 (pathBricks and SnakeHead added)
  *	1. There is only snakeHead, no snakeTail is present.
  *  2. There are only pathBricks present.
@@ -25,7 +25,8 @@
  * Scope for SNAKE VERSION 1.3.4 Create SpriteManager
  * Scope for SNAKE VERSION 1.3.4.1 Move all sprite drawing in SpriteManager
  * Scope for SNAKE VERSION 1.3.4.2 Make the game window size aware
- * Scope for SNAKE VERSION 1.3.5 Change the working to be based on time removing dependency on FPS (thanks to http://viget.com/extend/time-based-animation)
+ * Scope for SNAKE VERSION 1.3.5.1 Change the working to be based on time removing dependency on FPS (thanks to http://viget.com/extend/time-based-animation)
+ * Scope for SNAKE VERSION 1.3.5.2 Touch support
  * Scope for SNAKE VERSION 1.3.6 Game End animation added + Move drawing of snake body images to sprite manager + fix click of empty space on sides of play btn
  * Scope for SNAKE VERSION 1.3.7 Keep logo and btns in center irrespective of canvas width + BUG FIX: Food on snake body + Snake can cross itself
  * Scope for SNAKE VERSION 1.3.8 (Game start screen stuff added - Controls)
@@ -93,7 +94,7 @@ function GameManager() {
 	var snake = null;
 	var mazes = null;
 	var eventHandler = null;
-	this.spriteManager = new SpriteManager();
+	var spriteManager = null;
 	var food = null;
 	
 	//Data: data members
@@ -129,7 +130,8 @@ function GameManager() {
 		buffer.fillStyle = "rgb(255, 255, 255)";
 		buffer.font = "bold 25px sans-serif";
 		
-		gameManager.spriteManager.gameSprite.addEventListener('load', function () {
+		global.gameManager.spriteManager = new SpriteManager();
+		global.gameManager.spriteManager.gameSprite.addEventListener('load', function () {
 			global.gameManager.gameStage = 0;
 			global.gameManager.xNumTiles = 23;//_canvas.width/global.gameManager.tileWidth;
 			global.gameManager.yNumTiles = 24;//_canvas.height/global.gameManager.tileHeight;
@@ -177,7 +179,7 @@ function GameManager() {
 	}
 
 	this.Update = function() {
-		if(global.gameManager.windowHeight != window.innerWidth || global.gameManager.windowWidth != window.innerHeight){
+		if(global.gameManager.windowHeight != window.innerHeight || global.gameManager.windowWidth != window.innerWidth){
 			global.gameManager.windowHeight = window.innerHeight;
 			global.gameManager.windowWidth = window.innerWidth;
 		
@@ -224,7 +226,7 @@ function GameManager() {
 				//logo
 				gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.LOGO);
 				//play again btn
-				gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.PLAY_AGAIN);
+				//gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.PLAY_AGAIN);
 				break;
 			case global.GameState.WELCOME: //8 0 to 277 176
 				//welcome screen background image
@@ -232,7 +234,7 @@ function GameManager() {
 				//logo
 				gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.LOGO);
 				//play btn
-				gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.PLAY);
+				//gameManager.spriteManager.draw(buffer, gameManager.spriteManager.ImageId.PLAY);
 				break;
 		}
 		canvas.drawImage(_buffer, 0, 0);

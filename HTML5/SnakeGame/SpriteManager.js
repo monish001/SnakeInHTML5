@@ -19,15 +19,21 @@ function SpriteManager(){
 	this.playBtnY = 179;
 	this.playBtnW = 203;
 	this.playBtnH = 50;
-	this.playBtnCanvasX = 180;
-	this.playBtnCanvasY = 350;
+	this.playBtnCanvasX = function(){return (_buffer.width/2) - (this.playBtnW*_buffer.width/1065)/2;}//180;
+	this.playBtnCanvasY = function(){return (_buffer.height/2)+(this.playBtnH*_buffer.height/735)/1.0;}//350;
+	this.playBtnCanvasW = function(){return this.playBtnW*_buffer.width/1065;}
+	this.playBtnCanvasH = function(){return this.playBtnH*_buffer.height/735;}
+	
 	//play again btn
 	this.playAgainBtnX = 8;
 	this.playAgainBtnY = 230;
 	this.playAgainBtnW = this.playBtnW;
 	this.playAgainBtnH = this.playBtnH;
-	this.playAgainBtnCanvasX = this.playBtnCanvasX;
-	this.playAgainBtnCanvasY = this.playBtnCanvasY;
+	this.playAgainBtnCanvasX = function(){return (_buffer.width/2) - (this.playAgainBtnW*_buffer.width/1065)/2};
+	this.playAgainBtnCanvasY = function(){return (_buffer.height/2)+(this.playAgainBtnH*_buffer.height/735)/1.0};
+	this.playAgainBtnCanvasW = function(){return this.playAgainBtnW*_buffer.width/1065};
+	this.playAgainBtnCanvasH = function(){return this.playAgainBtnH*_buffer.height/735};
+	
 	//logo
 	this.logoX = 8;
 	this.logoY = 0;
@@ -86,24 +92,26 @@ function SpriteManager(){
 				buffer.drawImage(global.gameManager.spriteManager.welcomeSprite, 
 					this.playBtnX,this.playBtnY,
 					this.playBtnW,this.playBtnH,
-					this.playBtnCanvasX, this.playBtnCanvasY,
-					this.playBtnW,this.playBtnH
+					this.playBtnCanvasX(), this.playBtnCanvasY(),
+					this.playBtnCanvasW(), this.playBtnCanvasH()
 				);
 				break;
 			case this.ImageId.PLAY_AGAIN:
 				buffer.drawImage(global.gameManager.spriteManager.welcomeSprite, 
 					this.playAgainBtnX,this.playAgainBtnY,
 					this.playAgainBtnW,this.playAgainBtnH,
-					this.playAgainBtnCanvasX, this.playAgainBtnCanvasY,
-					this.playAgainBtnW,this.playAgainBtnH
+					this.playAgainBtnCanvasX(), this.playAgainBtnCanvasY(),
+					this.playAgainBtnCanvasW(), this.playAgainBtnCanvasH()
 				);
 				break;
 			case this.ImageId.LOGO:
 				buffer.drawImage(global.gameManager.spriteManager.welcomeSprite, 
 					this.logoX,this.logoY,
 					this.logoW,this.logoH,
-					this.logoCanvasX, this.logoCanvasY,
-					this.logoW,this.logoH
+					(_buffer.width/2) - (this.logoW*_buffer.width/1065)/2, (_buffer.height/2)-(this.logoH*_buffer.height/735)/1.25,
+					//this.logoCanvasX, this.logoCanvasY,
+					this.logoW*_buffer.width/1065,this.logoH*_buffer.height/735
+					//this.logoCanvasW, this.logoCanvasH,
 				);
 				break;
 			case this.ImageId.FOOD:
